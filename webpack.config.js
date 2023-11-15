@@ -1,5 +1,5 @@
 const path = require("path");
-const HtmlWebpackPlugin = requeri("html-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
     mode: "production",
@@ -12,8 +12,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             title: "Todo List App",
-            filename: "index.html",
-            template: "app.html",
+            template: "./src/app.html",
         }),
     ],
     module: {
