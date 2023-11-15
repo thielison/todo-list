@@ -25,48 +25,49 @@ body {
     align-items: center;
     background-color: #cc5546;
     color: #fafafa;
-    padding-left: 2rem;
+    padding-left: 1.5rem;
 }
 
 .main-content {
     display: grid;
     grid-template-columns: 300px 1fr;
-    
 }
 
 /* Tasks and Projects Menu */
 .main-content div:first-of-type {
     background-color: #fafafa;
     padding-top: 2rem;
-    padding-left: 2rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
 }
 
-ul, li {
-    list-style: none;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-}
-
-li {
-    font-size: 18px;
-}
-
-.main-content h3 {
+.main-content .menu h3 {
     color: #000000;
     font-size: 1.5rem;
 }
 
-.main-content .menu .home-menu li {
-    background-repeat: no-repeat;
-    background-position: 10px;
-    background-size: 20px;
-    padding: 0.4rem 0.4rem 0.4rem 2.5rem;
-    margin-right: 1.5rem;
-    border-radius: 0.2rem;
+.main-content .menu h3:last-of-type {
+    margin-top: 2rem;
 }
 
-.main-content .menu .home-menu li:hover{
+ul, li {
+    list-style: none;
+    margin-top: 0.8rem;
+    margin-bottom: 0.8rem;
+}
+
+.main-content .menu li {
+    background-repeat: no-repeat;
+    background-position: 10px;
+    background-size: 18px;
+    padding: 0.4rem 0.4rem 0.4rem 2.8rem;
+    border-radius: 0.3rem;
+}
+
+.main-content .menu .home-menu li:hover,
+.main-content .menu .projects .add-project-button:hover {
     background-color: #eeeeee;
+    cursor: pointer;
 }
 .main-content .menu .home-menu li:nth-child(1) {
     background-image: url("images/all-tasks.png");
@@ -86,6 +87,10 @@ li {
 
 .main-content .menu .home-menu li:nth-child(5) {
     background-image: url("images/completed.png");
+}
+
+.main-content .menu .projects .add-project-button {
+    background-image: url("images/plus.png");
 }
 
 /* Main content - Tasks view */
