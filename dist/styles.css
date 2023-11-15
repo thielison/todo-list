@@ -1,0 +1,95 @@
+:root {
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    color: #585858;
+}
+
+#content {
+    display: grid;
+    grid-template-rows: 60px 1fr;
+    height: 100vh;
+}
+
+.header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #cc5546;
+    color: #fafafa;
+    padding-left: 2rem;
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    
+}
+
+/* Tasks and Projects Menu */
+.main-content div:first-of-type {
+    background-color: #fafafa;
+    padding-top: 2rem;
+    padding-left: 2rem;
+}
+
+ul, li {
+    list-style: none;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+li {
+    font-size: 18px;
+}
+
+.main-content h3 {
+    color: #000000;
+    font-size: 1.5rem;
+}
+
+.main-content .menu .home-menu li {
+    background-repeat: no-repeat;
+    background-position: 10px;
+    background-size: 20px;
+    padding: 0.4rem 0.4rem 0.4rem 2.5rem;
+    margin-right: 1.5rem;
+    border-radius: 0.2rem;
+}
+
+.main-content .menu .home-menu li:hover{
+    background-color: #eeeeee;
+}
+.main-content .menu .home-menu li:nth-child(1) {
+    background-image: url("images/all-tasks.png");
+}
+
+.main-content .menu .home-menu li:nth-child(2) {
+    background-image: url("images/today.png");
+}
+
+.main-content .menu .home-menu li:nth-child(3) {
+    background-image: url("images/7-days.png");
+}
+
+.main-content .menu .home-menu li:nth-child(4) {
+    background-image: url("images/important.png");
+}
+
+.main-content .menu .home-menu li:nth-child(5) {
+    background-image: url("images/completed.png");
+}
+
+/* Main content - Tasks view */
+.main-content div:last-of-type {
+    background-color: #ffffff;
+}
+
