@@ -1,4 +1,7 @@
 :root {
+    --menu-padding: 0.4rem 0.4rem 0.4rem 2.8rem;
+    --menu-images-position: 10px;
+    --menu-icons-bgsize: 18px;
 }
 
 * {
@@ -30,7 +33,7 @@ body {
 
 .main-content {
     display: grid;
-    grid-template-columns: 300px 1fr;
+    grid-template-columns: 250px 1fr;
 }
 
 /* Tasks and Projects Menu */
@@ -41,8 +44,14 @@ body {
     padding-right: 1.5rem;
 }
 
+ul, li {
+    list-style: none;
+    margin-top: 0.8rem;
+    margin-bottom: 0.8rem;
+}
+
 .main-content .menu h3 {
-    color: #000000;
+    color: #252525;
     font-size: 1.5rem;
 }
 
@@ -50,25 +59,20 @@ body {
     margin-top: 2rem;
 }
 
-ul, li {
-    list-style: none;
-    margin-top: 0.8rem;
-    margin-bottom: 0.8rem;
-}
-
 .main-content .menu li {
     background-repeat: no-repeat;
-    background-position: 10px;
-    background-size: 18px;
-    padding: 0.4rem 0.4rem 0.4rem 2.8rem;
+    background-position: var(--menu-images-position);
+    background-size: var(--menu-icons-bgsize);
+    padding: var(--menu-padding);
     border-radius: 0.3rem;
 }
 
 .main-content .menu .home-menu li:hover,
-.main-content .menu .projects .add-project-button:hover {
+.main-content .menu .add-project-button:hover {
     background-color: #eeeeee;
     cursor: pointer;
 }
+
 .main-content .menu .home-menu li:nth-child(1) {
     background-image: url("images/all-tasks.png");
 }
@@ -89,8 +93,22 @@ ul, li {
     background-image: url("images/completed.png");
 }
 
-.main-content .menu .projects .add-project-button {
+.main-content .menu .add-project-button {
+    /* Remove all button styles */
+    background: none;
+	color: inherit;
+	border: none;
+	font: inherit;
+	outline: inherit;
+
     background-image: url("images/plus.png");
+    background-repeat: no-repeat;
+    background-position: var(--menu-images-position);
+    background-size: var(--menu-icons-bgsize);
+    padding: var(--menu-padding);
+    border-radius: 0.3rem;
+    width: 100%;
+    text-align: left;
 }
 
 /* Main content - Tasks view */
