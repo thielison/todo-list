@@ -59,7 +59,8 @@ ul, li {
     margin-top: 2rem;
 }
 
-.main-content .menu li {
+.main-content .menu .home-menu li,
+.main-content .menu .projects li {
     background-repeat: no-repeat;
     background-position: var(--menu-images-position);
     background-size: var(--menu-icons-bgsize);
@@ -68,7 +69,8 @@ ul, li {
 }
 
 .main-content .menu .home-menu li:hover,
-.main-content .menu .add-project-button:hover {
+.main-content .menu #add-project-button:hover,
+.main-content .menu .projects li:hover {
     background-color: #eeeeee;
     cursor: pointer;
 }
@@ -93,7 +95,7 @@ ul, li {
     background-image: url("images/completed.png");
 }
 
-.main-content .menu .add-project-button {
+.main-content .menu #add-project-button {
     /* Remove all button styles */
     background: none;
 	color: inherit;
@@ -109,6 +111,29 @@ ul, li {
     border-radius: 0.3rem;
     width: 100%;
     text-align: left;
+}
+
+.main-content .menu #project-name-input-form {
+    display: none;
+
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 0.5rem;
+}
+
+.main-content .menu #project-name-input-form input {
+    font-family: inherit;
+    width: 100%;
+    font-size: 1rem;
+    height: 30px;
+}
+
+.main-content .menu #project-name-input-form button {
+    flex-grow: 1;
+}
+
+.main-content .menu .projects li {
+    background-image: url("images/projects.png");
 }
 
 /* Main content - Tasks view */

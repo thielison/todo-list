@@ -30,7 +30,13 @@
                     <h3>Projects</h3>
                     <ul class="projects"></ul>
 
-                    <button class="add-project-button">Add Project</button>
+                    <form id="project-name-input-form">
+                        <input type="text" id="project-name-input" maxlength="18" required />
+                        <button type="submit" class="add-project">Add</button>
+                        <button type="button" class="cancel-project">Cancel</button>
+                    </form>
+
+                    <button id="add-project-button">Add Project</button>
                 </div>
 
                 <div class="tasks"></div>
