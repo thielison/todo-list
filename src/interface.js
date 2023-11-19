@@ -23,11 +23,25 @@ const createNewProjectManager = () => {
 
         const ul = document.querySelector(".projects");
         const li = document.createElement("li");
-
         li.textContent = projectNameInput.value;
+
+        const deleteBtn = document.createElement("span");
+        deleteBtn.className = "delete-btn";
+
+        li.addEventListener("click", (e) => {
+            if (e.target.className === "delete-btn") {
+                deleteProjectFromDOM(e.target);
+            }
+        });
+
+        li.appendChild(deleteBtn);
         ul.append(li);
 
         toggleFormForProjectNameInput();
+    };
+
+    const deleteProjectFromDOM = (project) => {
+        project.parentElement.remove();
     };
 
     addProjectButton.addEventListener("click", toggleFormForProjectNameInput);
