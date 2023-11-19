@@ -1,4 +1,5 @@
 :root {
+    --main-font-family: 'Inter', sans-serif;
     --menu-padding: 0.4rem 0.4rem 0.4rem 2.8rem;
     --menu-images-position: 10px;
     --menu-icons-bgsize: 18px;
@@ -11,7 +12,7 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--main-font-family);
     font-weight: 500;
     color: #585858;
 }
@@ -75,6 +76,24 @@ ul, li {
     cursor: pointer;
 }
 
+.main-content .menu .projects li {
+    display: flex;
+    justify-content: space-between;
+}
+
+.main-content .menu .projects .delete-btn {
+    visibility: hidden;
+    cursor: pointer;
+}
+.main-content .menu .projects li:hover .delete-btn {
+    visibility: visible;
+    background: url('images/x.png') no-repeat;
+    background-size: 12px 12px;
+    background-position: center;
+    width: 20px;
+    height: 20px;
+}
+
 .main-content .menu .home-menu li:nth-child(1) {
     background-image: url("images/all-tasks.png");
 }
@@ -95,6 +114,7 @@ ul, li {
     background-image: url("images/completed.png");
 }
 
+/* Button "Add Project" and input form for new projects name */
 .main-content .menu #add-project-button {
     /* Remove all button styles */
     background: none;
@@ -115,21 +135,34 @@ ul, li {
 
 .main-content .menu #project-name-input-form {
     display: none;
-
     flex-wrap: wrap;
-    width: 100%;
     gap: 0.5rem;
 }
 
 .main-content .menu #project-name-input-form input {
-    font-family: inherit;
+    font-family: var(--main-font-family);
     width: 100%;
     font-size: 1rem;
     height: 30px;
+    border: 1px solid #585858;
+    border-radius: 0.3rem;
+    outline: none;
+    padding-left: 0.5rem;
 }
 
 .main-content .menu #project-name-input-form button {
-    flex-grow: 1;
+    font-family: var(--main-font-family);
+    flex: 1 1 50px;
+    padding: 0.3rem 0 0.3rem 0;
+    border-radius: 0.3rem;
+    outline: none;
+    border: 1px solid #585858;
+}
+
+.main-content .menu #project-name-input-form button:hover {
+    color: #fafafa;
+    background-color: #cc5546;
+    cursor: pointer;
 }
 
 .main-content .menu .projects li {
