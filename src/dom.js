@@ -1,7 +1,7 @@
 const addProjectButton = document.getElementById("add-project-button");
 const inputFormForProjectName = document.getElementById("project-name-input-form");
-const projectNameInput = document.getElementById("project-name-input");
 
+// DOM related functions to create or delete projects
 const createDeleteProjectButton = () => {
     const deleteBtn = document.createElement("span");
     deleteBtn.className = "delete-btn";
@@ -25,14 +25,16 @@ const deleteProjectFromDOM = (project) => {
     project.parentElement.remove();
 };
 
-const appendProjectNameToDOM = () => {
-    if (projectNameInput.value === "") {
+const appendProjectNameToDOM = (projectName, index) => {
+    if (projectName === "") {
         return;
     }
 
     const ul = document.querySelector(".projects");
 
-    const li = createListItem(projectNameInput.value);
+    const li = createListItem(projectName);
+    li.setAttribute("data-index", index);
+
     const deleteBtn = createDeleteProjectButton();
 
     li.appendChild(deleteBtn);
@@ -41,18 +43,7 @@ const appendProjectNameToDOM = () => {
     toggleFormForProjectNameInput();
 };
 
-const handleClickOnAddAndCancelBtns = (submitBtn) => {
-    submitBtn.preventDefault();
-    if (submitBtn.target.className === "add-project") {
-        appendProjectNameToDOM();
-    } else if (submitBtn.target.className === "cancel-project") {
-        toggleFormForProjectNameInput();
-    }
-};
-
 const toggleFormForProjectNameInput = () => {
-    projectNameInput.value = "";
-
     if (inputFormForProjectName.style.display === "flex" && addProjectButton.style.display === "none") {
         inputFormForProjectName.style.display = "none";
         addProjectButton.style.display = "flex";
@@ -63,8 +54,4 @@ const toggleFormForProjectNameInput = () => {
     addProjectButton.style.display = "none";
 };
 
-export const createNewProjectManager = () => {
-    addProjectButton.addEventListener("click", toggleFormForProjectNameInput);
-
-    inputFormForProjectName.addEventListener("click", handleClickOnAddAndCancelBtns);
-};
+export { toggleFormForProjectNameInput, appendProjectNameToDOM };

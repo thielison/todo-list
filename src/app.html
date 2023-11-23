@@ -31,20 +31,21 @@
                     <ul class="projects"></ul>
 
                     <form id="project-name-input-form">
-                        <input
-                            type="text"
-                            id="project-name-input"
-                            maxlength="14"
-                            placeholder="Enter Project Name"
-                            required />
-                        <button type="submit" class="add-project">Add</button>
-                        <button type="button" class="cancel-project">Cancel</button>
+                        <input type="text" id="project-name-input" placeholder="Enter Project Name" required />
+                        <button type="submit" class="btn-submit-add-project">Add</button>
+                        <button type="button" class="btn-cancel-project">Cancel</button>
                     </form>
 
                     <button id="add-project-button">Add Project</button>
                 </div>
 
-                <div class="tasks"></div>
+                <div class="tasks">
+                    <div>
+                        <h1 class="tasks-header">All Tasks</h1>
+                    </div>
+                    <div>Tasks (<span class="task-count">0</span>)</div>
+                    <div class="task-list"></div>
+                </div>
             </main>
         </div>
     </body>
