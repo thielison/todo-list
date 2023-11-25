@@ -26,9 +26,9 @@ const deleteProjectFromDOM = (project) => {
 };
 
 const appendProjectNameToDOM = (projectName, index) => {
-    if (projectName === "") {
-        return;
-    }
+    // if (projectName === "") {
+    //     return;
+    // }
 
     const ul = document.querySelector(".projects");
 
@@ -40,10 +40,10 @@ const appendProjectNameToDOM = (projectName, index) => {
     li.appendChild(deleteBtn);
     ul.append(li);
 
-    toggleFormForProjectNameInput();
+    toggleHideOrShowInputForProjectName();
 };
 
-const toggleFormForProjectNameInput = () => {
+const toggleHideOrShowInputForProjectName = () => {
     if (inputFormForProjectName.style.display === "flex" && addProjectButton.style.display === "none") {
         inputFormForProjectName.style.display = "none";
         addProjectButton.style.display = "flex";
@@ -54,4 +54,4 @@ const toggleFormForProjectNameInput = () => {
     addProjectButton.style.display = "none";
 };
 
-export { toggleFormForProjectNameInput, appendProjectNameToDOM };
+export { toggleHideOrShowInputForProjectName, appendProjectNameToDOM };
