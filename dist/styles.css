@@ -176,13 +176,24 @@ ul, li {
 }
 
 /* Main content - Tasks view */
-.main-content .tasks {
-    /* background-color: #fff; */
+.main-content .tasks-view {
     background-color: #fff;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
     align-items: center;
+    justify-self: center;
     gap: 1rem;
+    margin-top: 2rem;
     width: 80%;
+}
+
+.main-content .task-list {
+    width: 100%;
+    border: 1px solid black;
+}
+
+.main-content .tasks li {
+    display: flex;
+    justify-content: space-evenly;
 }
 
