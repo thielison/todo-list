@@ -5,6 +5,10 @@ import { appendProjectNameToDOM } from "./dom-manager";
 const projectsManager = () => {
     const projects = [];
 
+    const getProjects = () => {
+        return projects;
+    };
+
     const addNewProject = () => {
         const projectNameInput = document.getElementById("project-name-input");
 
@@ -27,6 +31,12 @@ const projectsManager = () => {
     const removeProject = (index) => {
         if (index > -1) {
             projects.splice(index, 1);
+        }
+
+        // Updates the id of all the remaining projects in the array
+        // to reflect their new position in the projectsManager.projects array
+        for (let i = 0; i < projects.length; i++) {
+            projects[i].id = i;
         }
 
         console.log(projects);

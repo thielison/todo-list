@@ -1,7 +1,51 @@
 import { projects } from "./project-manager.js";
 
-const addProjectButton = document.getElementById("add-project-button");
-const inputFormForProjectName = document.getElementById("project-name-input-form");
+// Shows or hides both the form to input Project Name and the "Add Project" button
+const toggleHideOrShowInputForProjectName = () => {
+    const addProjectButton = document.getElementById("add-project-button");
+    const inputFormForProjectName = document.getElementById("project-name-input-form");
+
+    if (inputFormForProjectName.style.display === "flex" && addProjectButton.style.display === "none") {
+        inputFormForProjectName.style.display = "none";
+        addProjectButton.style.display = "flex";
+        return;
+    }
+
+    inputFormForProjectName.style.display = "flex";
+    addProjectButton.style.display = "none";
+};
+
+const handleProjectNameClick = () => {
+    // Show "add task button"
+    document.querySelector(".add-task-button").style.display = "block";
+};
+
+const removeProjectFromDOM = (project) => {
+    // Removes a project from the DOM
+    project.parentElement.remove();
+
+    // Updates the data-index attribute of all remaining projects in the DOM
+    // to reflect their new position in the projectsManager.projects array
+    let allProjects = document.querySelectorAll(".project");
+    for (let i = 0; i < allProjects.length; i++) {
+        allProjects[i].setAttribute("data-index", i);
+    }
+};
+
+// Function to handle delete project button click
+const handleClickOnDeleteProjectButton = (e) => {
+    // Remove the project from the DOM
+    removeProjectFromDOM(e.target);
+    // And remove the project from the projects array
+    projects.removeProject(e.target.parentElement.dataset.index);
+};
+
+// Delete project on each project name on the DOM
+const createDeleteProjectButton = () => {
+    const deleteBtn = document.createElement("span");
+    deleteBtn.className = "delete-btn";
+    return deleteBtn;
+};
 
 // Create a new list item that hold the name of the project
 // The data-index attribute set here on each project in the DOM
@@ -15,25 +59,19 @@ const createListItemWithProjectName = (projectName, index) => {
     return li;
 };
 
-// Function do add an event listener to each project name (list item)
-const addEventListenerToListItem = (li) => {
+// Function do add an event listener to each list item (project name)
+const addEventListenerToProjectNameListItem = (li) => {
     li.addEventListener("click", (e) => {
         // Check if the clicked element is the delete button
         if (e.target.className === "delete-btn") {
-            // If it is, remove the project from the DOM
-            removeProjectFromDOM(e.target);
-            // And remove the project from the projects array
-            projects.removeProject(e.target.parentElement.dataset.index);
+            handleClickOnDeleteProjectButton(e);
             return;
+        } else {
+            handleProjectNameClick();
         }
-    });
-};
 
-// Delete project on each project name on the DOM
-const createDeleteProjectButton = () => {
-    const deleteBtn = document.createElement("span");
-    deleteBtn.className = "delete-btn";
-    return deleteBtn;
+        console.log(e.target);
+    });
 };
 
 // Function to append a new project name to the DOM
@@ -44,8 +82,8 @@ const appendProjectNameToDOM = (projectName, index) => {
     // Create a new list item with project name and data-index
     const li = createListItemWithProjectName(projectName, index);
 
-    // Add an event listener to the list item
-    addEventListenerToListItem(li);
+    // Add an event listener to each project (list item)
+    addEventListenerToProjectNameListItem(li);
 
     // Create a delete button for the project
     const deleteBtn = createDeleteProjectButton();
@@ -57,27 +95,4 @@ const appendProjectNameToDOM = (projectName, index) => {
     toggleHideOrShowInputForProjectName();
 };
 
-const removeProjectFromDOM = (project) => {
-    // Removes a project from the DOM
-    project.parentElement.remove();
-
-    // Updates the data-index attribute of all remaining book cards
-    // to reflect their new position in the projectsManager.projects array
-    let allProjects = document.querySelectorAll(".project");
-    for (let i = 0; i < allProjects.length; i++) {
-        allProjects[i].setAttribute("data-index", i);
-    }
-};
-
-const toggleHideOrShowInputForProjectName = () => {
-    if (inputFormForProjectName.style.display === "flex" && addProjectButton.style.display === "none") {
-        inputFormForProjectName.style.display = "none";
-        addProjectButton.style.display = "flex";
-        return;
-    }
-
-    inputFormForProjectName.style.display = "flex";
-    addProjectButton.style.display = "none";
-};
-
-export { toggleHideOrShowInputForProjectName, appendProjectNameToDOM, removeProjectFromDOM };
+export { toggleHideOrShowInputForProjectName, appendProjectNameToDOM };

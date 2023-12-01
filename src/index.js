@@ -12,8 +12,14 @@ const handleClickOnAddAndCancelProjectNameBtns = (submitBtn) => {
     }
 };
 
+const handleClickOnAddTaskButton = () => {
+    console.log("Task add button was clicked");
+};
+
 // Button to create a new project ("Add Project" button)
 document.getElementById("add-project-button").addEventListener("click", () => toggleHideOrShowInputForProjectName());
 
 // Form to type project name... it opens when the user clicks on the "Add Project" button
 document.getElementById("project-name-input-form").addEventListener("click", handleClickOnAddAndCancelProjectNameBtns);
+
+document.querySelector(".tasks-container .add-task-button").addEventListener("click", handleClickOnAddTaskButton);
