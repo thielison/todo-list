@@ -176,7 +176,7 @@ ul, li {
 }
 
 /* Main content - Tasks view */
-.main-content .tasks-view {
+div.tasks-container {
     background-color: #fff;
     display: flex;
     flex-direction: column; 
@@ -187,13 +187,28 @@ ul, li {
     width: 80%;
 }
 
-.main-content .task-list {
+.tasks-container .task-list {
     width: 100%;
     border: 1px solid black;
 }
 
-.main-content .tasks li {
+div.tasks-container div.add-task-button-field-and-task-count-field {
     display: flex;
-    justify-content: space-evenly;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
 }
 
+.tasks-container .add-task-button-field-and-task-count-field button.add-task-button{
+    display: none;
+}
+
+.tasks-container .task-list .to-do {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.tasks-container .task-list .to-do .to-do-right-side {
+    display: flex;
+}
