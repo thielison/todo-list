@@ -192,17 +192,6 @@ div.tasks-container {
     border: 1px solid black;
 }
 
-div.tasks-container div.add-task-button-field-and-task-count-field {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.tasks-container .add-task-button-field-and-task-count-field button.add-task-button{
-    display: none;
-}
-
 .tasks-container .task-list .to-do {
     display: flex;
     flex-direction: row;
@@ -211,4 +200,24 @@ div.tasks-container div.add-task-button-field-and-task-count-field {
 
 .tasks-container .task-list .to-do .to-do-right-side {
     display: flex;
+}
+
+.tasks-container .add-task-button {
+    align-self: flex-start;
+    display: none;
+}
+
+.tasks-container .todo-input-information-container {
+    display: none;
+    width: 100%;
+}
+
+.tasks-container #todo-input-form {
+   display: flex;
+   flex-direction: column;
+   gap: 0.4rem;
+}
+
+.tasks-container #todo-input-form .submit-buttons {
+    align-self: center;
 }

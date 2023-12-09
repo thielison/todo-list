@@ -1,5 +1,6 @@
 import { projects } from "./project-manager.js";
 
+// FUNCTIONS RESPONSIBLE FOR MANAGING PROJECTS
 // Shows or hides both the form to input Project Name and the "Add Project" button
 const toggleHideOrShowInputForProjectName = () => {
     const addProjectButton = document.getElementById("add-project-button");
@@ -15,8 +16,16 @@ const toggleHideOrShowInputForProjectName = () => {
     addProjectButton.style.display = "none";
 };
 
-const handleProjectNameClick = () => {
-    // Show "add task button"
+const handleClickOnProjectName = (event) => {
+    const array = projects.getProjects();
+    const dataIndexOfProjectNameClicked = event.target.dataset.index;
+    const tasksHeader = document.querySelector(".tasks-container .tasks-header");
+
+    // Change page header to show the name of a project based on the
+    // data-index of the list item and the array of projects
+    tasksHeader.textContent = array[dataIndexOfProjectNameClicked].projectName;
+
+    // Show "add task button" after a click on a project
     document.querySelector(".add-task-button").style.display = "block";
 };
 
@@ -67,10 +76,8 @@ const addEventListenerToProjectNameListItem = (li) => {
             handleClickOnDeleteProjectButton(e);
             return;
         } else {
-            handleProjectNameClick();
+            handleClickOnProjectName(e);
         }
-
-        console.log(e.target);
     });
 };
 
@@ -95,4 +102,16 @@ const appendProjectNameToDOM = (projectName, index) => {
     toggleHideOrShowInputForProjectName();
 };
 
-export { toggleHideOrShowInputForProjectName, appendProjectNameToDOM };
+// FUNCTIONS RESPONSIBLE FOR MANAGING TODOS
+const toggleHideOrShowInputForToDoInfo = () => {
+    const toDoInformationForm = document.querySelector(".todo-input-information-container");
+
+    if (toDoInformationForm.style.display === "none") {
+        toDoInformationForm.style.display = "block";
+        return;
+    }
+
+    toDoInformationForm.style.display = "none";
+};
+
+export { toggleHideOrShowInputForProjectName, appendProjectNameToDOM, toggleHideOrShowInputForToDoInfo };

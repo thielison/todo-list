@@ -42,7 +42,7 @@ const projectsManager = () => {
         console.log(projects);
     };
 
-    return { addNewProject, removeProject };
+    return { addNewProject, removeProject, getProjects };
 };
 
 export const projects = projectsManager();
