@@ -28,6 +28,14 @@ const getToDoInfoFromForm = (e) => {
     return { title, description, dueDate };
 };
 
+const clearToDoInfoInputs = () => {
+    // Clear all to do info inputs after adding or canceling a to do
+    const inputs = document.querySelectorAll("#title, #description, #due-date");
+    inputs.forEach((input) => {
+        input.value = "";
+    });
+};
+
 // Button to create a new project ("Add Project" button)
 document.getElementById("add-project-button").addEventListener("click", toggleHideOrShowInputForProjectName);
 
@@ -39,9 +47,19 @@ document.querySelector(".tasks-container .add-task-button").addEventListener("cl
 
 document.querySelector("body").addEventListener("click", (e) => {
     if (e.target.id === "btn-add-todo") {
+        // Get to do info from form
         const newTodo = getToDoInfoFromForm(e);
+
+        // Add new to do to the last project clicked (dataIndexOfLastProjectClicked)
         projectsAndToDosManager.addNewTodoToAProject(newTodo, dataIndexOfLastProjectClicked);
+
+        // Hide form
+        toggleHideOrShowInputForToDoInfo();
+
+        // Clear all input fields for to do info
+        clearToDoInfoInputs();
     } else if (e.target.id === "btn-cancel-todo") {
         toggleHideOrShowInputForToDoInfo();
+        clearToDoInfoInputs();
     }
 });
