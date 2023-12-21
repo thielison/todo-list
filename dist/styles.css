@@ -195,7 +195,7 @@ div.tasks-container {
 .tasks-container .task-list .to-do {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .tasks-container .add-task-button {

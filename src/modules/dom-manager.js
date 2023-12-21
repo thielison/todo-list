@@ -156,11 +156,11 @@ const displayAllTodosOfAProject = (dataIndex) => {
 
         const input = document.createElement("input");
         input.setAttribute("type", "checkbox");
-        input.setAttribute("id", "todoNUMBERSOMETHING");
-        input.setAttribute("name", "todoNUMBERSOMETHING");
+        input.setAttribute("id", `todo${i}`);
+        input.setAttribute("name", `todo${i}`);
 
         const label = document.createElement("label");
-        label.setAttribute("for", "sometodo");
+        label.setAttribute("for", `todo${i}`);
         label.textContent = projectsAndTodosArray[dataIndex].todos[i].title;
 
         const dueDateP = document.createElement("p");

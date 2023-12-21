@@ -48,8 +48,6 @@ const projectsAndToDosManager = () => {
 
         displayAllTodosOfAProject(dataIndexOfTheProject);
 
-        // something like display todos (inside the specific project) dataIndex?
-
         console.log(projects);
     };
 

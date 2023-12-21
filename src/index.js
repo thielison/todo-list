@@ -40,7 +40,6 @@ document.querySelector(".tasks-container .add-task-button").addEventListener("cl
 document.querySelector("body").addEventListener("click", (e) => {
     if (e.target.id === "btn-add-todo") {
         const newTodo = getToDoInfoFromForm(e);
-
         projectsAndToDosManager.addNewTodoToAProject(newTodo, dataIndexOfLastProjectClicked);
     } else if (e.target.id === "btn-cancel-todo") {
         toggleHideOrShowInputForToDoInfo();
