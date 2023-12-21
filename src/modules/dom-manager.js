@@ -139,6 +139,11 @@ const appendProjectNameToDOM = (projectName, index) => {
 
 // FUNCTIONS RESPONSIBLE FOR MANAGING TO DOS
 // This function, when called, creates elements to display all the todos inside a specific project
+const updateProjectTaskCount = (numOfToDosInsideAProject) => {
+    const taskCountSpan = document.getElementById("task-count");
+    taskCountSpan.textContent = numOfToDosInsideAProject;
+};
+
 const displayAllTodosOfAProject = (dataIndex) => {
     const projectsAndTodosArray = projectsAndTodosManager.getProjects();
 
@@ -182,6 +187,8 @@ const displayAllTodosOfAProject = (dataIndex) => {
     }
 
     taskList.append(ul);
+
+    updateProjectTaskCount(projectsAndTodosArray[dataIndex].todos.length);
 };
 
 export {
