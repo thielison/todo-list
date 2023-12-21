@@ -189,17 +189,13 @@ div.tasks-container {
 
 .tasks-container .task-list {
     width: 100%;
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 .tasks-container .task-list .to-do {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-}
-
-.tasks-container .task-list .to-do .to-do-right-side {
-    display: flex;
+    justify-content: space-around;
 }
 
 .tasks-container .add-task-button {

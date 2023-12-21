@@ -1,4 +1,8 @@
-import { projects } from "./project-manager.js";
+import { projects as projectsAndTodosManager } from "./project-manager.js";
+
+// Export the updated data index of last project clicked
+// This data index will be used to add todos to a specific project
+export let dataIndexOfLastProjectClicked = null;
 
 // FUNCTIONS RESPONSIBLE FOR MANAGING PROJECTS
 // Shows or hides both the form to input Project Name and the "Add Project" button
@@ -16,17 +20,47 @@ const toggleHideOrShowInputForProjectName = () => {
     addProjectButton.style.display = "none";
 };
 
-const handleClickOnProjectName = (event) => {
-    const array = projects.getProjects();
-    const dataIndexOfProjectNameClicked = event.target.dataset.index;
-    const tasksHeader = document.querySelector(".tasks-container .tasks-header");
+const toggleHideOrShowInputForToDoInfo = () => {
+    const toDoInformationForm = document.querySelector(".todo-input-information-container");
 
-    // Change page header to show the name of a project based on the
-    // data-index of the list item and the array of projects
-    tasksHeader.textContent = array[dataIndexOfProjectNameClicked].projectName;
+    if (toDoInformationForm.style.display === "none") {
+        toDoInformationForm.style.display = "flex";
+        return;
+    }
 
-    // Show "add task button" after a click on a project
-    document.querySelector(".add-task-button").style.display = "block";
+    toDoInformationForm.style.display = "none";
+};
+
+const handleClickOnAddTaskButton = () => {
+    document.querySelector(".todo-input-information-container").style.display = "block";
+};
+
+// Define a function to handle project name clicks
+const projectNameClickEventHandler = () => {
+    // Update the tasks header with the project name
+    const updateProjectsHeaderOnPage = (index) => {
+        const projectsArray = projectsAndTodosManager.getProjects();
+        const tasksHeader = document.querySelector(".tasks-container .tasks-header");
+        tasksHeader.textContent = projectsArray[index].projectName;
+    };
+
+    // Display the "add task" button on the page
+    const showAddTaskButton = () => {
+        const addTaskButton = document.querySelector(".add-task-button");
+        addTaskButton.style.display = "block";
+    };
+
+    // Handle a project name click event
+    const projectNameClicked = (event) => {
+        dataIndexOfLastProjectClicked = event.target.dataset.index;
+        updateProjectsHeaderOnPage(dataIndexOfLastProjectClicked);
+        displayAllTodosOfAProject(dataIndexOfLastProjectClicked);
+        showAddTaskButton();
+    };
+
+    return {
+        projectNameClicked,
+    };
 };
 
 const removeProjectFromDOM = (project) => {
@@ -46,7 +80,7 @@ const handleClickOnDeleteProjectButton = (e) => {
     // Remove the project from the DOM
     removeProjectFromDOM(e.target);
     // And remove the project from the projects array
-    projects.removeProject(e.target.parentElement.dataset.index);
+    projectsAndTodosManager.removeProject(e.target.parentElement.dataset.index);
 };
 
 // Delete project on each project name on the DOM
@@ -76,7 +110,8 @@ const addEventListenerToProjectNameListItem = (li) => {
             handleClickOnDeleteProjectButton(e);
             return;
         } else {
-            handleClickOnProjectName(e);
+            const projectsEventHandler = projectNameClickEventHandler();
+            projectsEventHandler.projectNameClicked(e);
         }
     });
 };
@@ -102,16 +137,57 @@ const appendProjectNameToDOM = (projectName, index) => {
     toggleHideOrShowInputForProjectName();
 };
 
-// FUNCTIONS RESPONSIBLE FOR MANAGING TODOS
-const toggleHideOrShowInputForToDoInfo = () => {
-    const toDoInformationForm = document.querySelector(".todo-input-information-container");
+// FUNCTIONS RESPONSIBLE FOR MANAGING TO DOS
+// This function, when called, creates elements to display all the todos inside a specific project
+const displayAllTodosOfAProject = (dataIndex) => {
+    const projectsAndTodosArray = projectsAndTodosManager.getProjects();
 
-    if (toDoInformationForm.style.display === "none") {
-        toDoInformationForm.style.display = "block";
-        return;
+    const taskList = document.querySelector(".task-list");
+    taskList.textContent = "";
+
+    const ul = document.createElement("ul");
+
+    for (let i = 0; i < projectsAndTodosArray[dataIndex].todos.length; i++) {
+        const li = document.createElement("li");
+        li.setAttribute("data-index", i);
+
+        const div = document.createElement("div");
+        div.className = "to-do";
+
+        const input = document.createElement("input");
+        input.setAttribute("type", "checkbox");
+        input.setAttribute("id", "todoNUMBERSOMETHING");
+        input.setAttribute("name", "todoNUMBERSOMETHING");
+
+        const label = document.createElement("label");
+        label.setAttribute("for", "sometodo");
+        label.textContent = projectsAndTodosArray[dataIndex].todos[i].title;
+
+        const dueDateP = document.createElement("p");
+        dueDateP.textContent = "some due date";
+
+        const editTodoBtn = document.createElement("button");
+        editTodoBtn.className = "edit-to-do";
+        editTodoBtn.textContent = "Edit todo btn";
+
+        const deleteTodoBtn = document.createElement("button");
+        deleteTodoBtn.className = "delete-to-do";
+        deleteTodoBtn.textContent = "Delete todo btn";
+
+        div.append(input, label, dueDateP, editTodoBtn, deleteTodoBtn);
+
+        li.append(div);
+
+        ul.append(li);
     }
 
-    toDoInformationForm.style.display = "none";
+    taskList.append(ul);
 };
 
-export { toggleHideOrShowInputForProjectName, appendProjectNameToDOM, toggleHideOrShowInputForToDoInfo };
+export {
+    toggleHideOrShowInputForProjectName,
+    appendProjectNameToDOM,
+    toggleHideOrShowInputForToDoInfo,
+    handleClickOnAddTaskButton,
+    displayAllTodosOfAProject,
+};

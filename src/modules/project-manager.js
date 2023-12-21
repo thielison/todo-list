@@ -1,8 +1,8 @@
-import { appendProjectNameToDOM } from "./dom-manager";
+import { appendProjectNameToDOM, displayAllTodosOfAProject } from "./dom-manager";
 
 // This function manages an array of projects (an array of to-do items)
 // Each element in the array is an object with an id, projectName, and todos
-const projectsManager = () => {
+const projectsAndToDosManager = () => {
     const projects = [];
 
     const getProjects = () => {
@@ -24,8 +24,6 @@ const projectsManager = () => {
         appendProjectNameToDOM(projectName, id);
 
         projectNameInput.value = "";
-
-        console.log(projects);
     };
 
     const removeProject = (index) => {
@@ -33,16 +31,29 @@ const projectsManager = () => {
             projects.splice(index, 1);
         }
 
-        // Updates the id of all the remaining projects in the array
-        // to reflect their new position in the projectsManager.projects array
+        // Updates the id of all remaining projects in the array to reflect
+        // their new position in the projectsManager.projects array
         for (let i = 0; i < projects.length; i++) {
             projects[i].id = i;
         }
+    };
+
+    const addNewTodoToAProject = (toDoInfo, dataIndexOfTheProject) => {
+        if (dataIndexOfTheProject < 0 || dataIndexOfTheProject >= projects.length) {
+            alert("Invalid project index");
+            return;
+        }
+
+        projects[dataIndexOfTheProject].todos.push(toDoInfo);
+
+        displayAllTodosOfAProject(dataIndexOfTheProject);
+
+        // something like display todos (inside the specific project) dataIndex?
 
         console.log(projects);
     };
 
-    return { addNewProject, removeProject, getProjects };
+    return { addNewProject, removeProject, getProjects, addNewTodoToAProject };
 };
 
-export const projects = projectsManager();
+export const projects = projectsAndToDosManager();
