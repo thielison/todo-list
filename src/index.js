@@ -1,4 +1,4 @@
-import { projects as projectsAndToDosManager } from "./modules/project-manager.js";
+import { projects as projectsAndToDosManager } from "./modules/projects-and-todos-manager.js";
 import {
     toggleHideOrShowInputForProjectName,
     toggleHideOrShowInputForToDoInfo,
@@ -7,12 +7,12 @@ import {
 } from "./modules/dom-manager.js";
 
 // Handle click on the "Add Project Button" in the Projects Menu
-const handleClickOnAddAndCancelProjectNameBtns = (submitProjectBtn) => {
-    submitProjectBtn.preventDefault();
+const handleClickOnAddAndCancelProjectNameBtns = (e) => {
+    e.preventDefault();
 
-    if (submitProjectBtn.target.textContent === "Add") {
+    if (e.target.id === "btn-submit-add-project") {
         projectsAndToDosManager.addNewProject();
-    } else if (submitProjectBtn.target.textContent === "Cancel") {
+    } else if (e.target.id === "btn-cancel-project") {
         toggleHideOrShowInputForProjectName();
     }
 };

@@ -1,4 +1,4 @@
-import { projects as projectsAndTodosManager } from "./project-manager.js";
+import { projects as projectsAndTodosManager } from "./projects-and-todos-manager.js";
 
 // Export the updated data index of last project clicked
 // This data index will be used to add todos to a specific project
