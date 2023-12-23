@@ -1,4 +1,5 @@
 import { projects as projectsAndTodosManager } from "./projects-and-todos-manager.js";
+import { format } from "date-fns";
 
 // Export the updated data index of last project clicked
 // This data index will be used to add todos to a specific project
@@ -54,7 +55,7 @@ const projectNameClickEventHandler = () => {
     const projectNameClicked = (event) => {
         dataIndexOfLastProjectClicked = event.target.dataset.index;
         updateProjectsHeaderOnPage(dataIndexOfLastProjectClicked);
-        displayAllTodosOfAProject(dataIndexOfLastProjectClicked);
+        displayTodosOfAProject(dataIndexOfLastProjectClicked);
         showAddTaskButton();
     };
 
@@ -144,7 +145,7 @@ const updateProjectTaskCount = (numOfToDosInsideAProject) => {
     taskCountSpan.textContent = numOfToDosInsideAProject;
 };
 
-const displayAllTodosOfAProject = (dataIndex) => {
+const displayTodosOfAProject = (dataIndex) => {
     const projectsAndTodosArray = projectsAndTodosManager.getProjects();
 
     const taskList = document.querySelector(".task-list");
@@ -155,9 +156,11 @@ const displayAllTodosOfAProject = (dataIndex) => {
     for (let i = 0; i < projectsAndTodosArray[dataIndex].todos.length; i++) {
         const li = document.createElement("li");
         li.setAttribute("data-index", i);
+        li.className = "todo";
 
-        const div = document.createElement("div");
-        div.className = "to-do";
+        // Todo left side
+        const todoLeftSide = document.createElement("div");
+        todoLeftSide.className = "todo-left-side";
 
         const input = document.createElement("input");
         input.setAttribute("type", "checkbox");
@@ -168,8 +171,17 @@ const displayAllTodosOfAProject = (dataIndex) => {
         label.setAttribute("for", `todo${i}`);
         label.textContent = projectsAndTodosArray[dataIndex].todos[i].title;
 
-        const dueDateP = document.createElement("p");
-        dueDateP.textContent = "some due date";
+        todoLeftSide.append(input, label);
+
+        // Todo right side
+        const todoRightSide = document.createElement("div");
+        todoRightSide.className = "todo-right-side";
+
+        const dateString = projectsAndTodosArray[dataIndex].todos[i].dueDate;
+        const date = new Date(dateString.replace(/-/g, "/"));
+
+        const dueDate = document.createElement("p");
+        dueDate.textContent = format(date, "dd-MM-yyyy");
 
         const editTodoBtn = document.createElement("button");
         editTodoBtn.className = "edit-to-do";
@@ -179,9 +191,9 @@ const displayAllTodosOfAProject = (dataIndex) => {
         deleteTodoBtn.className = "delete-to-do";
         deleteTodoBtn.textContent = "Delete todo btn";
 
-        div.append(input, label, dueDateP, editTodoBtn, deleteTodoBtn);
+        todoRightSide.append(dueDate, editTodoBtn, deleteTodoBtn);
 
-        li.append(div);
+        li.append(todoLeftSide, todoRightSide);
 
         ul.append(li);
     }
@@ -196,5 +208,5 @@ export {
     appendProjectNameToDOM,
     toggleHideOrShowInputForToDoInfo,
     handleClickOnAddTaskButton,
-    displayAllTodosOfAProject,
+    displayTodosOfAProject as displayAllTodosOfAProject,
 };

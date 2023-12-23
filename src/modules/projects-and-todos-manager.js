@@ -9,21 +9,16 @@ const projectsAndToDosManager = () => {
         return projects;
     };
 
-    const addNewProject = () => {
-        const projectNameInput = document.getElementById("project-name-input");
-
-        let id = projects.length;
-        let todos = [];
-        let projectName = projectNameInput.value;
-
+    const addNewProject = (projectName) => {
         if (projectName === "") {
             return;
         }
 
+        let id = projects.length;
+        let todos = [];
+
         projects.push({ id, projectName, todos });
         appendProjectNameToDOM(projectName, id);
-
-        projectNameInput.value = "";
     };
 
     const removeProject = (index) => {

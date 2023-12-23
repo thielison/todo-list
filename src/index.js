@@ -7,14 +7,14 @@ import {
 } from "./modules/dom-manager.js";
 
 // Handle click on the "Add Project Button" in the Projects Menu
-const handleClickOnAddAndCancelProjectNameBtns = (e) => {
+const handleClickOnAddProjectNameBtn = (e) => {
     e.preventDefault();
 
-    if (e.target.id === "btn-submit-add-project") {
-        projectsAndToDosManager.addNewProject();
-    } else if (e.target.id === "btn-cancel-project") {
-        toggleHideOrShowInputForProjectName();
-    }
+    const projectNameInput = document.getElementById("project-name-input");
+
+    projectsAndToDosManager.addNewProject(projectNameInput.value);
+
+    projectNameInput.value = "";
 };
 
 const getToDoInfoFromForm = (e) => {
@@ -40,26 +40,35 @@ const clearToDoInfoInputs = () => {
 document.getElementById("add-project-button").addEventListener("click", toggleHideOrShowInputForProjectName);
 
 // Form to type project name... it opens when the user clicks on the "Add Project" button
-document.getElementById("project-name-input-form").addEventListener("click", handleClickOnAddAndCancelProjectNameBtns);
+document.getElementById("project-name-input-form").addEventListener("submit", handleClickOnAddProjectNameBtn);
+
+document.querySelector("#todo-input-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const newTodo = getToDoInfoFromForm(e);
+
+    // Add new to do to the last project clicked (dataIndexOfLastProjectClicked)
+    projectsAndToDosManager.addNewTodoToAProject(newTodo, dataIndexOfLastProjectClicked);
+
+    // Hide form
+    toggleHideOrShowInputForToDoInfo();
+
+    // Clear all input fields for to do info
+    clearToDoInfoInputs();
+});
 
 // If user clicks on "Add Task" button, it will open a form to insert todo info
 document.querySelector(".tasks-container .add-task-button").addEventListener("click", handleClickOnAddTaskButton);
 
-document.querySelector("body").addEventListener("click", (e) => {
-    if (e.target.id === "btn-add-todo") {
-        // Get to do info from form
-        const newTodo = getToDoInfoFromForm(e);
+// Handle click on cancel todo button
+document.querySelector("#btn-cancel-todo").addEventListener("click", (e) => {
+    e.preventDefault();
+    toggleHideOrShowInputForToDoInfo();
+    clearToDoInfoInputs();
+});
 
-        // Add new to do to the last project clicked (dataIndexOfLastProjectClicked)
-        projectsAndToDosManager.addNewTodoToAProject(newTodo, dataIndexOfLastProjectClicked);
-
-        // Hide form
-        toggleHideOrShowInputForToDoInfo();
-
-        // Clear all input fields for to do info
-        clearToDoInfoInputs();
-    } else if (e.target.id === "btn-cancel-todo") {
-        toggleHideOrShowInputForToDoInfo();
-        clearToDoInfoInputs();
-    }
+// Handle click on cancel project name button
+document.querySelector("#btn-cancel-project").addEventListener("click", (e) => {
+    e.preventDefault();
+    toggleHideOrShowInputForProjectName();
 });
