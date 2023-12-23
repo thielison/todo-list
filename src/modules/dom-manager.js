@@ -162,16 +162,32 @@ const displayTodosOfAProject = (dataIndex) => {
         const todoLeftSide = document.createElement("div");
         todoLeftSide.className = "todo-left-side";
 
-        const input = document.createElement("input");
-        input.setAttribute("type", "checkbox");
-        input.setAttribute("id", `todo${i}`);
-        input.setAttribute("name", `todo${i}`);
+        // Create a div that contains the todo checkbox
+        const checkboxDiv = document.createElement("div");
 
-        const label = document.createElement("label");
-        label.setAttribute("for", `todo${i}`);
-        label.textContent = projectsAndTodosArray[dataIndex].todos[i].title;
+        const checkboxInput = document.createElement("input");
+        checkboxInput.setAttribute("type", "checkbox");
+        checkboxInput.setAttribute("id", `todo${i}`);
+        checkboxInput.setAttribute("name", `todo${i}`);
+        checkboxDiv.append(checkboxInput);
 
-        todoLeftSide.append(input, label);
+        // Create a div that contains the todo title and description
+        const todoTitleAndDescriptionDiv = document.createElement("div");
+        todoTitleAndDescriptionDiv.classList = "todo-title-and-description-div";
+
+        const todoTitleLabel = document.createElement("label");
+        todoTitleLabel.setAttribute("for", `todo${i}`);
+        todoTitleLabel.textContent = projectsAndTodosArray[dataIndex].todos[i].title;
+
+        const todoDescriptionPara = document.createElement("p");
+        todoDescriptionPara.className = "todo-description";
+        todoDescriptionPara.textContent = projectsAndTodosArray[dataIndex].todos[i].description;
+
+        // Append title and description to the todo title and description div
+        todoTitleAndDescriptionDiv.append(todoTitleLabel, todoDescriptionPara);
+
+        // Append the checkbox div, and the title and description div
+        todoLeftSide.append(checkboxDiv, todoTitleAndDescriptionDiv);
 
         // Todo right side
         const todoRightSide = document.createElement("div");
@@ -185,11 +201,11 @@ const displayTodosOfAProject = (dataIndex) => {
 
         const editTodoBtn = document.createElement("button");
         editTodoBtn.className = "edit-to-do";
-        editTodoBtn.textContent = "Edit todo btn";
+        editTodoBtn.textContent = "Edit";
 
         const deleteTodoBtn = document.createElement("button");
         deleteTodoBtn.className = "delete-to-do";
-        deleteTodoBtn.textContent = "Delete todo btn";
+        deleteTodoBtn.textContent = "Delete";
 
         todoRightSide.append(dueDate, editTodoBtn, deleteTodoBtn);
 
@@ -208,5 +224,5 @@ export {
     appendProjectNameToDOM,
     toggleHideOrShowInputForToDoInfo,
     handleClickOnAddTaskButton,
-    displayTodosOfAProject as displayAllTodosOfAProject,
+    displayTodosOfAProject,
 };

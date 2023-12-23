@@ -1,4 +1,4 @@
-import { appendProjectNameToDOM, displayAllTodosOfAProject } from "./dom-manager";
+import { appendProjectNameToDOM, displayTodosOfAProject } from "./dom-manager";
 
 // This function manages an array of projects (an array of to-do items)
 // Each element in the array is an object with an id, projectName, and todos
@@ -41,7 +41,7 @@ const projectsAndToDosManager = () => {
 
         projects[dataIndexOfTheProject].todos.push(toDoInfo);
 
-        displayAllTodosOfAProject(dataIndexOfTheProject);
+        displayTodosOfAProject(dataIndexOfTheProject);
 
         console.log(projects);
     };

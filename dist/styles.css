@@ -196,9 +196,23 @@ div.tasks-container {
     flex-direction: row;
     justify-content: space-between;
     border: 1px solid black;
+    padding: 0.5rem;
 }
 
-.tasks-container .task-list .todo .todo-left-side, 
+.tasks-container .task-list .todo .todo-left-side {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 10px;
+}
+
+.tasks-container .task-list .todo .todo-left-side .todo-description {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #9e9e9e;
+}
+
+ 
 .tasks-container .task-list .todo .todo-right-side {
     display: flex;
     flex-direction: row;
