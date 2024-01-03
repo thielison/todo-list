@@ -25,15 +25,22 @@ const toggleHideOrShowInputForToDoInfo = () => {
     const toDoInformationForm = document.querySelector(".todo-input-information-container");
 
     if (toDoInformationForm.style.display === "none") {
-        toDoInformationForm.style.display = "flex";
+        toDoInformationForm.style.display = "block";
         return;
     }
 
     toDoInformationForm.style.display = "none";
 };
 
-const handleClickOnAddTaskButton = () => {
-    document.querySelector(".todo-input-information-container").style.display = "block";
+const toggleHideOrShowInputToEditToDoInfo = () => {
+    const toDoInformationForm = document.querySelector(".todo-edit-information-container");
+
+    if (toDoInformationForm.style.display === "none") {
+        toDoInformationForm.style.display = "block";
+        return;
+    }
+
+    toDoInformationForm.style.display = "none";
 };
 
 // Define a function to handle project name clicks
@@ -138,13 +145,14 @@ const appendProjectNameToDOM = (projectName, index) => {
     toggleHideOrShowInputForProjectName();
 };
 
-// FUNCTIONS RESPONSIBLE FOR MANAGING TO DOS
-// This function, when called, creates elements to display all the todos inside a specific project
+// This function will keep track of the number of todos inside a project
 const updateProjectTaskCount = (numOfToDosInsideAProject) => {
     const taskCountSpan = document.getElementById("task-count");
     taskCountSpan.textContent = numOfToDosInsideAProject;
 };
 
+// FUNCTIONS RESPONSIBLE FOR MANAGING TO DOS
+// This function, when called, creates elements to display all the todos inside a specific project
 const displayTodosOfAProject = (dataIndex) => {
     const projectsAndTodosArray = projectsAndTodosManager.getProjects();
 
@@ -162,7 +170,7 @@ const displayTodosOfAProject = (dataIndex) => {
         const todoLeftSide = document.createElement("div");
         todoLeftSide.className = "todo-left-side";
 
-        // Create a div that contains the todo checkbox
+        // Create a div that will contain the todo checkbox
         const checkboxDiv = document.createElement("div");
 
         const checkboxInput = document.createElement("input");
@@ -171,7 +179,7 @@ const displayTodosOfAProject = (dataIndex) => {
         checkboxInput.setAttribute("name", `todo${i}`);
         checkboxDiv.append(checkboxInput);
 
-        // Create a div that contains the todo title and description
+        // Create a div that will contain the todo title and description
         const todoTitleAndDescriptionDiv = document.createElement("div");
         todoTitleAndDescriptionDiv.classList = "todo-title-and-description-div";
 
@@ -182,10 +190,8 @@ const displayTodosOfAProject = (dataIndex) => {
         const todoDescriptionPara = document.createElement("p");
         todoDescriptionPara.className = "todo-description";
         todoDescriptionPara.textContent = projectsAndTodosArray[dataIndex].todos[i].description;
-
-        // Append title and description to the todo title and description div
+        // Append title and description to the todoTitleAndDescriptionDiv
         todoTitleAndDescriptionDiv.append(todoTitleLabel, todoDescriptionPara);
-
         // Append the checkbox div, and the title and description div
         todoLeftSide.append(checkboxDiv, todoTitleAndDescriptionDiv);
 
@@ -223,6 +229,6 @@ export {
     toggleHideOrShowInputForProjectName,
     appendProjectNameToDOM,
     toggleHideOrShowInputForToDoInfo,
-    handleClickOnAddTaskButton,
+    toggleHideOrShowInputToEditToDoInfo,
     displayTodosOfAProject,
 };

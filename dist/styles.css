@@ -224,12 +224,13 @@ div.tasks-container {
     display: none;
 }
 
-.tasks-container .todo-input-information-container {
-    display: none;
+.tasks-container .todo-input-information-container,
+.tasks-container .todo-edit-information-container {
     width: 100%;
 }
 
-.tasks-container #todo-input-form {
+.tasks-container #todo-input-form,
+.tasks-container #edit-todo-form {
    display: flex;
    flex-direction: column;
    gap: 0.4rem;

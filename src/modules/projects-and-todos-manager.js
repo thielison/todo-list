@@ -42,11 +42,25 @@ const projectsAndToDosManager = () => {
         projects[dataIndexOfTheProject].todos.push(toDoInfo);
 
         displayTodosOfAProject(dataIndexOfTheProject);
-
-        console.log(projects);
     };
 
-    return { addNewProject, removeProject, getProjects, addNewTodoToAProject };
+    const updateTodoInfo = (updatedTodoInfo, dataIndexOfLastProjectClicked, dataIndexOfTodoToUpdate) => {
+        if (
+            dataIndexOfLastProjectClicked < 0 ||
+            dataIndexOfLastProjectClicked >= projects.length ||
+            dataIndexOfTodoToUpdate < 0 ||
+            dataIndexOfTodoToUpdate > projects[dataIndexOfLastProjectClicked].todos.length
+        ) {
+            alert("Invalid project index");
+            return;
+        }
+
+        projects[dataIndexOfLastProjectClicked].todos.splice(dataIndexOfTodoToUpdate, 1, updatedTodoInfo);
+
+        displayTodosOfAProject(dataIndexOfLastProjectClicked);
+    };
+
+    return { addNewProject, removeProject, getProjects, addNewTodoToAProject, updateTodoInfo };
 };
 
 export const projects = projectsAndToDosManager();

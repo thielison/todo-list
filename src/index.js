@@ -2,7 +2,7 @@ import { projects as projectsAndToDosManager } from "./modules/projects-and-todo
 import {
     toggleHideOrShowInputForProjectName,
     toggleHideOrShowInputForToDoInfo,
-    handleClickOnAddTaskButton,
+    toggleHideOrShowInputToEditToDoInfo,
     dataIndexOfLastProjectClicked,
 } from "./modules/dom-manager.js";
 
@@ -17,13 +17,27 @@ const handleClickOnAddProjectNameBtn = (e) => {
     projectNameInput.value = "";
 };
 
-const getToDoInfoFromForm = (e) => {
+// Get new todo info or updated todo info from forms
+const getToDoInfoFromForm = (e, formID) => {
     e.preventDefault();
 
-    const formData = new FormData(document.getElementById("todo-input-form"));
-    const title = formData.get("title");
-    const description = formData.get("description");
-    let dueDate = document.getElementById("due-date").value;
+    const formData = new FormData(document.getElementById(formID));
+    let title, description, dueDate;
+
+    switch (formID) {
+        case "todo-input-form":
+            title = formData.get("title");
+            description = formData.get("description");
+            dueDate = document.getElementById("due-date").value;
+            break;
+        case "edit-todo-form":
+            title = formData.get("edit-title");
+            description = formData.get("edit-description");
+            dueDate = document.getElementById("edit-due-date").value;
+            break;
+        default:
+            alert("Error getting info from form!");
+    }
 
     return { title, description, dueDate };
 };
@@ -36,29 +50,66 @@ const clearToDoInfoInputs = () => {
     });
 };
 
+function fillFormFieldsWithTodoInfo(todo) {
+    document.getElementById("edit-title").value = todo.title;
+    document.getElementById("edit-description").value = todo.description;
+    document.getElementById("edit-due-date").value = todo.dueDate;
+}
+
 // Button to create a new project ("Add Project" button)
 document.getElementById("add-project-button").addEventListener("click", toggleHideOrShowInputForProjectName);
 
 // Form to type project name... it opens when the user clicks on the "Add Project" button
 document.getElementById("project-name-input-form").addEventListener("submit", handleClickOnAddProjectNameBtn);
 
-document.querySelector("#todo-input-form").addEventListener("submit", (e) => {
+// Handle click on cancel project name button
+document.querySelector("#btn-cancel-project").addEventListener("click", (e) => {
     e.preventDefault();
-
-    const newTodo = getToDoInfoFromForm(e);
-
-    // Add new to do to the last project clicked (dataIndexOfLastProjectClicked)
-    projectsAndToDosManager.addNewTodoToAProject(newTodo, dataIndexOfLastProjectClicked);
-
-    // Hide form
-    toggleHideOrShowInputForToDoInfo();
-
-    // Clear all input fields for to do info
-    clearToDoInfoInputs();
+    toggleHideOrShowInputForProjectName();
 });
 
 // If user clicks on "Add Task" button, it will open a form to insert todo info
-document.querySelector(".tasks-container .add-task-button").addEventListener("click", handleClickOnAddTaskButton);
+document.querySelector(".tasks-container .add-task-button").addEventListener("click", toggleHideOrShowInputForToDoInfo);
+
+document.querySelector("#todo-input-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const formID = "todo-input-form";
+    const todoInfo = getToDoInfoFromForm(e, formID);
+    // Add new to do to the last project clicked (dataIndexOfLastProjectClicked)
+    projectsAndToDosManager.addNewTodoToAProject(todoInfo, dataIndexOfLastProjectClicked);
+
+    toggleHideOrShowInputForToDoInfo();
+    clearToDoInfoInputs();
+});
+
+let dataIndexOfTodo;
+
+// If user clicks on "Edit" button, it will open a form to update todo info
+document.querySelector("#edit-todo-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const formID = "edit-todo-form";
+    const updatedTodoInfo = getToDoInfoFromForm(e, formID);
+
+    projectsAndToDosManager.updateTodoInfo(updatedTodoInfo, dataIndexOfLastProjectClicked, dataIndexOfTodo);
+
+    toggleHideOrShowInputToEditToDoInfo();
+    clearToDoInfoInputs();
+});
+
+document.querySelector("body").addEventListener("click", (e) => {
+    if (e.target.className === "edit-to-do") {
+        toggleHideOrShowInputToEditToDoInfo();
+
+        const projectsArray = projectsAndToDosManager.getProjects();
+
+        dataIndexOfTodo = e.target.closest(".todo").dataset.index;
+        const infoOfTodoToEdit = projectsArray[dataIndexOfLastProjectClicked].todos[dataIndexOfTodo];
+
+        fillFormFieldsWithTodoInfo(infoOfTodoToEdit);
+    }
+});
 
 // Handle click on cancel todo button
 document.querySelector("#btn-cancel-todo").addEventListener("click", (e) => {
@@ -67,8 +118,7 @@ document.querySelector("#btn-cancel-todo").addEventListener("click", (e) => {
     clearToDoInfoInputs();
 });
 
-// Handle click on cancel project name button
-document.querySelector("#btn-cancel-project").addEventListener("click", (e) => {
+document.querySelector("#btn-cancel-todo-update").addEventListener("click", (e) => {
     e.preventDefault();
-    toggleHideOrShowInputForProjectName();
+    toggleHideOrShowInputToEditToDoInfo();
 });
