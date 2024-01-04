@@ -43,6 +43,12 @@ const toggleHideOrShowInputToEditToDoInfo = () => {
     toDoInformationForm.style.display = "none";
 };
 
+// Display the "add task" button on the page
+const toggleAddTaskButton = (show) => {
+    const addTaskButton = document.querySelector(".add-task-button");
+    addTaskButton.style.display = show ? "block" : "none";
+};
+
 // Define a function to handle project name clicks
 const projectNameClickEventHandler = () => {
     // Update the tasks header with the project name
@@ -52,18 +58,12 @@ const projectNameClickEventHandler = () => {
         tasksHeader.textContent = projectsArray[index].projectName;
     };
 
-    // Display the "add task" button on the page
-    const showAddTaskButton = () => {
-        const addTaskButton = document.querySelector(".add-task-button");
-        addTaskButton.style.display = "block";
-    };
-
     // Handle a project name click event
     const projectNameClicked = (event) => {
         dataIndexOfLastProjectClicked = event.target.dataset.index;
         updateProjectsHeaderOnPage(dataIndexOfLastProjectClicked);
         displayTodosOfAProject(dataIndexOfLastProjectClicked);
-        showAddTaskButton();
+        toggleAddTaskButton(true);
     };
 
     return {
@@ -231,4 +231,5 @@ export {
     toggleHideOrShowInputForToDoInfo,
     toggleHideOrShowInputToEditToDoInfo,
     displayTodosOfAProject,
+    toggleAddTaskButton,
 };
