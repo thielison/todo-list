@@ -175,6 +175,11 @@ ul, li {
     background-image: url("images/projects.png");
 }
 
+.disabled {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
 /* Main content - Tasks view */
 div.tasks-container {
     background-color: #fff;
