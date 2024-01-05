@@ -71,6 +71,22 @@ const projectNameClickEventHandler = () => {
     };
 };
 
+// Prevent changing projects when editing a specific todo
+const preventProjectChange = (status) => {
+    const projects = document.querySelectorAll(".projects li");
+
+    if (status === true) {
+        projects.forEach((project) => {
+            project.classList.add("disabled");
+        });
+        return;
+    } else {
+        projects.forEach((project) => {
+            project.classList.remove("disabled");
+        });
+    }
+};
+
 const removeProjectFromDOM = (project) => {
     // Removes a project from the DOM
     project.parentElement.remove();
@@ -232,4 +248,5 @@ export {
     toggleHideOrShowInputToEditToDoInfo,
     displayTodosOfAProject,
     toggleAddTaskButton,
+    preventProjectChange,
 };

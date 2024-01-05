@@ -1,13 +1,17 @@
 import { projects as projectsAndToDosManager } from "./modules/projects-and-todos-manager.js";
 import {
+    dataIndexOfLastProjectClicked,
     toggleHideOrShowInputForProjectName,
     toggleHideOrShowInputForToDoInfo,
     toggleHideOrShowInputToEditToDoInfo,
-    dataIndexOfLastProjectClicked,
     toggleAddTaskButton,
+    preventProjectChange,
 } from "./modules/dom-manager.js";
 
-// Handle click on the "Add Project Button" in the Projects Menu
+// let dataIndexOfLastProjectClicked;
+let dataIndexOfTodo;
+
+// Handle click on the "Add Project" button in the Projects Menu
 const handleClickOnAddProjectNameBtn = (e) => {
     e.preventDefault();
 
@@ -84,8 +88,6 @@ document.querySelector("#todo-input-form").addEventListener("submit", (e) => {
     clearToDoInfoInputs();
 });
 
-let dataIndexOfTodo;
-
 // If user clicks on "Edit" button, it will open a form to update todo info
 document.querySelector("#edit-todo-form").addEventListener("submit", (e) => {
     e.preventDefault();
@@ -97,6 +99,7 @@ document.querySelector("#edit-todo-form").addEventListener("submit", (e) => {
 
     toggleHideOrShowInputToEditToDoInfo();
     toggleAddTaskButton(true);
+    preventProjectChange(false);
     clearToDoInfoInputs();
 });
 
@@ -104,6 +107,7 @@ document.querySelector("body").addEventListener("click", (e) => {
     if (e.target.className === "edit-to-do") {
         toggleHideOrShowInputToEditToDoInfo();
         toggleAddTaskButton(false);
+        preventProjectChange(true);
 
         const projectsArray = projectsAndToDosManager.getProjects();
 
@@ -125,4 +129,5 @@ document.querySelector("#btn-cancel-todo-update").addEventListener("click", (e) 
     e.preventDefault();
     toggleHideOrShowInputToEditToDoInfo();
     toggleAddTaskButton(true);
+    preventProjectChange(false);
 });
