@@ -5,10 +5,9 @@ import {
     toggleHideOrShowInputForToDoInfo,
     toggleHideOrShowInputToEditToDoInfo,
     toggleAddTaskButton,
-    preventProjectChange,
+    preventAddOrChangeProject,
 } from "./modules/dom-manager.js";
 
-// let dataIndexOfLastProjectClicked;
 let dataIndexOfTodo;
 
 // Handle click on the "Add Project" button in the Projects Menu
@@ -99,7 +98,7 @@ document.querySelector("#edit-todo-form").addEventListener("submit", (e) => {
 
     toggleHideOrShowInputToEditToDoInfo();
     toggleAddTaskButton(true);
-    preventProjectChange(false);
+    preventAddOrChangeProject(false);
     clearToDoInfoInputs();
 });
 
@@ -107,7 +106,7 @@ document.querySelector("body").addEventListener("click", (e) => {
     if (e.target.className === "edit-to-do") {
         toggleHideOrShowInputToEditToDoInfo();
         toggleAddTaskButton(false);
-        preventProjectChange(true);
+        preventAddOrChangeProject(true);
 
         const projectsArray = projectsAndToDosManager.getProjects();
 
@@ -129,5 +128,5 @@ document.querySelector("#btn-cancel-todo-update").addEventListener("click", (e) 
     e.preventDefault();
     toggleHideOrShowInputToEditToDoInfo();
     toggleAddTaskButton(true);
-    preventProjectChange(false);
+    preventAddOrChangeProject(false);
 });

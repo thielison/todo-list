@@ -71,20 +71,18 @@ const projectNameClickEventHandler = () => {
     };
 };
 
-// Prevent changing projects when editing a specific todo
-const preventProjectChange = (status) => {
+// Depending on the boolean passed as an argument, this function will add or
+// remove the css class "disabled" from each project name and the Add Project btn,
+// preventing changing and adding projects when editing a specific todo
+const preventAddOrChangeProject = (status) => {
     const projects = document.querySelectorAll(".projects li");
+    const addProjectBtn = document.getElementById("add-project-button");
 
-    if (status === true) {
-        projects.forEach((project) => {
-            project.classList.add("disabled");
-        });
-        return;
-    } else {
-        projects.forEach((project) => {
-            project.classList.remove("disabled");
-        });
-    }
+    projects.forEach((project) => {
+        status ? project.classList.add("disabled") : project.classList.remove("disabled");
+    });
+
+    status ? addProjectBtn.classList.add("disabled") : addProjectBtn.classList.remove("disabled");
 };
 
 const removeProjectFromDOM = (project) => {
@@ -248,5 +246,5 @@ export {
     toggleHideOrShowInputToEditToDoInfo,
     displayTodosOfAProject,
     toggleAddTaskButton,
-    preventProjectChange,
+    preventAddOrChangeProject,
 };
