@@ -229,6 +229,11 @@ div.tasks-container {
     display: none;
 }
 
+.tasks-container .add-task-button:hover,
+.tasks-container .task-list .todo-right-side button {
+    cursor: pointer;
+}
+
 .tasks-container .todo-input-information-container,
 .tasks-container .todo-edit-information-container {
     width: 100%;
