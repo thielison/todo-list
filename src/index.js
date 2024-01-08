@@ -60,6 +60,21 @@ function fillFormFieldsWithTodoInfo(todo) {
     document.getElementById("edit-due-date").value = todo.dueDate;
 }
 
+// Handles a click on the edit todo button, allowing the
+// user to change the information of each individual todo
+const handleEditTodoClick = (e) => {
+    toggleHideOrShowInputToEditToDoInfo();
+    toggleAddTaskButton(false);
+    preventAddOrChangeProject(true);
+
+    const projectsArray = projectsAndToDosManager.getProjects();
+
+    dataIndexOfTodo = e.target.closest(".todo").dataset.index;
+    const infoOfTodoToEdit = projectsArray[dataIndexOfLastProjectClicked].todos[dataIndexOfTodo];
+
+    fillFormFieldsWithTodoInfo(infoOfTodoToEdit);
+};
+
 // Button to create a new project ("Add Project" button)
 document.getElementById("add-project-button").addEventListener("click", toggleHideOrShowInputForProjectName);
 
@@ -104,16 +119,7 @@ document.querySelector("#edit-todo-form").addEventListener("submit", (e) => {
 
 document.querySelector("body").addEventListener("click", (e) => {
     if (e.target.className === "edit-to-do") {
-        toggleHideOrShowInputToEditToDoInfo();
-        toggleAddTaskButton(false);
-        preventAddOrChangeProject(true);
-
-        const projectsArray = projectsAndToDosManager.getProjects();
-
-        dataIndexOfTodo = e.target.closest(".todo").dataset.index;
-        const infoOfTodoToEdit = projectsArray[dataIndexOfLastProjectClicked].todos[dataIndexOfTodo];
-
-        fillFormFieldsWithTodoInfo(infoOfTodoToEdit);
+        handleEditTodoClick(e);
     }
 });
 
