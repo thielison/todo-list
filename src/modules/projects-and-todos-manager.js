@@ -60,7 +60,15 @@ const projectsAndToDosManager = () => {
         displayTodosOfAProject(dataIndexOfLastProjectClicked);
     };
 
-    return { addNewProject, removeProject, getProjects, addNewTodoToAProject, updateTodoInfo };
+    const deleteTodo = (projectIndex, todoIndex) => {
+        if (projectIndex > -1 || todoIndex > -1) {
+            projects[projectIndex].todos.splice(todoIndex, 1);
+        }
+
+        displayTodosOfAProject(projectIndex);
+    };
+
+    return { addNewProject, removeProject, getProjects, addNewTodoToAProject, updateTodoInfo, deleteTodo };
 };
 
 export const projects = projectsAndToDosManager();

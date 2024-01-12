@@ -75,6 +75,12 @@ const handleEditTodoClick = (e) => {
     fillFormFieldsWithTodoInfo(infoOfTodoToEdit);
 };
 
+const handleDeleteTodoClick = (e) => {
+    dataIndexOfTodo = e.target.closest(".todo").dataset.index;
+
+    projectsAndToDosManager.deleteTodo(dataIndexOfLastProjectClicked, dataIndexOfTodo);
+};
+
 // Button to create a new project ("Add Project" button)
 document.getElementById("add-project-button").addEventListener("click", toggleHideOrShowInputForProjectName);
 
@@ -120,6 +126,11 @@ document.querySelector("#edit-todo-form").addEventListener("submit", (e) => {
 document.querySelector("body").addEventListener("click", (e) => {
     if (e.target.className === "edit-to-do") {
         handleEditTodoClick(e);
+        return;
+    }
+
+    if (e.target.className === "delete-to-do") {
+        handleDeleteTodoClick(e);
     }
 });
 
