@@ -5,7 +5,9 @@ import { format } from "date-fns";
 
 // Export the updated data index of last project clicked
 // This data index will be used to add todos to a specific project
-export let dataIndexOfLastProjectClicked = null;
+// Starts with 0 to display the first Project in the list of projects
+// when loading the page
+export let dataIndexOfLastProjectClicked = 0;
 
 // FUNCTIONS RESPONSIBLE FOR MANAGING PROJECTS
 // Shows or hides both the form to input Project Name and the "Add Project" button
@@ -168,6 +170,15 @@ const updateProjectTaskCount = (numOfToDosInsideAProject) => {
 };
 
 // FUNCTIONS RESPONSIBLE FOR MANAGING TO DOS
+
+// This function changes the todo status as completed or not
+const onTodoCheckboxChange = (e) => {
+    const isCompleted = e.target.checked;
+    const todoIndex = e.target.closest(".todo").dataset.index;
+
+    projectsAndTodosManager.toggleTodoCompletion(dataIndexOfLastProjectClicked, todoIndex, isCompleted);
+};
+
 // This function, when called, creates elements to display all the todos inside a specific project
 const displayTodosOfAProject = (dataIndex) => {
     const projectsAndTodosArray = projectsAndTodosManager.getProjects();
@@ -189,11 +200,16 @@ const displayTodosOfAProject = (dataIndex) => {
         // Create a div that will contain the todo checkbox
         const checkboxDiv = document.createElement("div");
 
-        const checkboxInput = document.createElement("input");
-        checkboxInput.setAttribute("type", "checkbox");
-        checkboxInput.setAttribute("id", `todo${i}`);
-        checkboxInput.setAttribute("name", `todo${i}`);
-        checkboxDiv.append(checkboxInput);
+        const checkbox = document.createElement("input");
+        checkbox.setAttribute("type", "checkbox");
+        checkbox.setAttribute("id", `todo${i}`);
+        checkbox.setAttribute("name", `todo-checkbox`);
+
+        // Each todo checkbox will have its own event listener
+        // This allows to toggle each todo as completed or not
+        checkbox.addEventListener("change", onTodoCheckboxChange);
+
+        checkboxDiv.append(checkbox);
 
         // Create a div that will contain the todo title and description
         const todoTitleAndDescriptionDiv = document.createElement("div");

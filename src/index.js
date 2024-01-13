@@ -29,6 +29,7 @@ const getToDoInfoFromForm = (e, formID) => {
 
     const formData = new FormData(document.getElementById(formID));
     let title, description, dueDate;
+    let isCompleted = false;
 
     switch (formID) {
         case "todo-input-form":
@@ -45,7 +46,7 @@ const getToDoInfoFromForm = (e, formID) => {
             alert("Error getting info from form!");
     }
 
-    return { title, description, dueDate };
+    return { title, description, dueDate, isCompleted };
 };
 
 const clearToDoInfoInputs = () => {

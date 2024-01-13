@@ -70,7 +70,19 @@ const projectsAndToDosManager = () => {
         displayTodosOfAProject(projectIndex);
     };
 
-    return { addNewProject, removeProject, getProjects, addNewTodoToAProject, updateTodoInfo, deleteTodo };
+    const toggleTodoCompletion = (projectIndex, todoIndex, isCompleted) => {
+        projects[projectIndex].todos[todoIndex].completed = isCompleted;
+    };
+
+    return {
+        addNewProject,
+        removeProject,
+        getProjects,
+        addNewTodoToAProject,
+        updateTodoInfo,
+        deleteTodo,
+        toggleTodoCompletion,
+    };
 };
 
 export const projects = projectsAndToDosManager();
