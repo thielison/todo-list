@@ -1,3 +1,5 @@
+"use strict";
+
 import { projects as projectsAndTodosManager } from "./projects-and-todos-manager.js";
 import { format } from "date-fns";
 

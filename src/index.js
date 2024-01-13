@@ -1,3 +1,5 @@
+"use strict";
+
 import { projects as projectsAndToDosManager } from "./modules/projects-and-todos-manager.js";
 import {
     dataIndexOfLastProjectClicked,

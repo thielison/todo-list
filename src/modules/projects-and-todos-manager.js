@@ -1,3 +1,5 @@
+"use strict";
+
 import { appendProjectNameToDOM, displayTodosOfAProject } from "./dom-manager";
 
 // This function manages an array of projects (an array of to-do items)
