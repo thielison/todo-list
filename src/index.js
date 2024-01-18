@@ -28,19 +28,25 @@ const getToDoInfoFromForm = (e, formID) => {
     e.preventDefault();
 
     const formData = new FormData(document.getElementById(formID));
-    let title, description, dueDate;
-    let isCompleted = false;
+    let title, description, dueDate, isCompleted;
 
     switch (formID) {
         case "todo-input-form":
             title = formData.get("title");
             description = formData.get("description");
             dueDate = document.getElementById("due-date").value;
+            isCompleted = false;
             break;
         case "edit-todo-form":
+            const projects = projectsAndToDosManager.getProjects();
+
             title = formData.get("edit-title");
             description = formData.get("edit-description");
             dueDate = document.getElementById("edit-due-date").value;
+
+            // isCompleted here will get the todo status of checked (or not) and keep it when submitting the updated todo info
+            isCompleted = projects[dataIndexOfLastProjectClicked].todos[dataIndexOfTodo].isCompleted;
+
             break;
         default:
             alert("Error getting info from form!");

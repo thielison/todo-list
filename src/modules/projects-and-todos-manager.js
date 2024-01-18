@@ -70,8 +70,8 @@ const projectsAndToDosManager = () => {
         displayTodosOfAProject(projectIndex);
     };
 
-    const toggleTodoCompletion = (projectIndex, todoIndex, isCompleted) => {
-        projects[projectIndex].todos[todoIndex].completed = isCompleted;
+    const toggleTodoCompletion = (projectIndex, todoIndex, todoIsCompleted) => {
+        projects[projectIndex].todos[todoIndex].isCompleted = todoIsCompleted;
     };
 
     return {

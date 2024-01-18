@@ -209,6 +209,11 @@ const displayTodosOfAProject = (dataIndex) => {
         // This allows to toggle each todo as completed or not
         checkbox.addEventListener("change", onTodoCheckboxChange);
 
+        const todoIsChecked = projectsAndTodosArray[dataIndex].todos[i].isCompleted;
+        if (todoIsChecked) {
+            checkbox.checked = true;
+        }
+
         checkboxDiv.append(checkbox);
 
         // Create a div that will contain the todo title and description
