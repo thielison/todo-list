@@ -64,7 +64,7 @@
                                 placeholder="I'm just gonna procrastinate, aren't I?"></textarea>
 
                             <label for="due-date">Due date</label>
-                            <input type="date" id="due-date" placeholder="Due date" required />
+                            <input type="date" id="due-date" placeholder="Due date" max="2099-12-31" required />
 
                             <div class="submit-buttons">
                                 <button type="submit" id="btn-add-todo">Add</button>
@@ -83,7 +83,7 @@
                             <textarea name="edit-description" id="edit-description" cols="30" rows="3"></textarea>
 
                             <label for="edit-due-date">Due date</label>
-                            <input type="date" id="edit-due-date" required />
+                            <input type="date" id="edit-due-date" max="2099-12-31" required />
 
                             <div class="submit-buttons">
                                 <button type="submit" id="btn-update-todo">Update</button>
