@@ -1,10 +1,11 @@
 "use strict";
 
 import { appendProjectNameToDOM, displayTodosOfAProject } from "./dom-manager";
+import { populateStorage } from "./storage";
 
 // This function manages an array of projects (an array of to-do items)
 // Each element in the array is an object with an id, projectName, and todos
-const projectsAndToDosManager = () => {
+export const projectsAndToDosManager = () => {
     const projects = [];
 
     const getProjects = () => {
@@ -20,7 +21,9 @@ const projectsAndToDosManager = () => {
         let todos = [];
 
         projects.push({ id, projectName, todos });
+
         appendProjectNameToDOM(projectName, id);
+        populateStorage(projects);
     };
 
     const removeProject = (index) => {
@@ -33,6 +36,8 @@ const projectsAndToDosManager = () => {
         for (let i = 0; i < projects.length; i++) {
             projects[i].id = i;
         }
+
+        populateStorage(projects);
     };
 
     const addNewTodoToAProject = (toDoInfo, dataIndexOfTheProject) => {
@@ -44,6 +49,7 @@ const projectsAndToDosManager = () => {
         projects[dataIndexOfTheProject].todos.push(toDoInfo);
 
         displayTodosOfAProject(dataIndexOfTheProject);
+        populateStorage(projects);
     };
 
     const updateTodoInfo = (updatedTodoInfo, dataIndexOfLastProjectClicked, dataIndexOfTodoToUpdate) => {
@@ -60,6 +66,7 @@ const projectsAndToDosManager = () => {
         projects[dataIndexOfLastProjectClicked].todos.splice(dataIndexOfTodoToUpdate, 1, updatedTodoInfo);
 
         displayTodosOfAProject(dataIndexOfLastProjectClicked);
+        populateStorage(projects);
     };
 
     const deleteTodo = (projectIndex, todoIndex) => {
@@ -68,10 +75,12 @@ const projectsAndToDosManager = () => {
         }
 
         displayTodosOfAProject(projectIndex);
+        populateStorage(projects);
     };
 
     const toggleTodoCompletion = (projectIndex, todoIndex, todoIsCompleted) => {
         projects[projectIndex].todos[todoIndex].isCompleted = todoIsCompleted;
+        populateStorage(projects);
     };
 
     return {
