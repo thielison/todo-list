@@ -5,7 +5,7 @@ import { populateStorage } from "./storage";
 
 // This function manages an array of projects (an array of to-do items)
 // Each element in the array is an object with an id, projectName, and todos
-export const projectsAndToDosManager = () => {
+const projectsAndToDosManager = () => {
     const projects = [];
 
     const getProjects = () => {
