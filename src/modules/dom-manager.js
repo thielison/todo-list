@@ -107,6 +107,13 @@ const handleClickOnDeleteProjectButton = (e) => {
     removeProjectFromDOM(e.target);
     // And remove the project from the projects array
     projectsAndTodosManager.removeProject(e.target.parentElement.dataset.index);
+
+    // Project deleted, so taskCount = 0
+    updateProjectTaskCount(0);
+    // Clear all todos displayed in the page after deleting the project
+    clearTaskList();
+    // No projects selected, so task header = ""
+    document.querySelector(".tasks-container .tasks-header").textContent = "";
 };
 
 // Delete project on each project name on the DOM
@@ -179,12 +186,18 @@ const onTodoCheckboxChange = (e) => {
     projectsAndTodosManager.toggleTodoCompletion(dataIndexOfLastProjectClicked, todoIndex, isCompleted);
 };
 
+const clearTaskList = () => {
+    const taskList = document.querySelector(".task-list");
+    taskList.textContent = "";
+
+    return taskList;
+};
+
 // This function, when called, creates elements to display all the todos inside a specific project
 const displayTodosOfAProject = (dataIndex) => {
     const projectsAndTodosArray = projectsAndTodosManager.getProjects();
 
-    const taskList = document.querySelector(".task-list");
-    taskList.textContent = "";
+    const taskList = clearTaskList();
 
     const ul = document.createElement("ul");
 
@@ -259,7 +272,8 @@ const displayTodosOfAProject = (dataIndex) => {
 
     taskList.append(ul);
 
-    updateProjectTaskCount(projectsAndTodosArray[dataIndex].todos.length);
+    const numOfTodosInsideProject = projectsAndTodosArray[dataIndex].todos.length;
+    updateProjectTaskCount(numOfTodosInsideProject);
 };
 
 export {
