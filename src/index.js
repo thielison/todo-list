@@ -8,6 +8,7 @@ import {
     toggleHideOrShowInputToEditToDoInfo,
     toggleAddTaskButton,
     preventAddOrChangeProject,
+    displayAllTodos,
 } from "./modules/dom-manager.js";
 
 let dataIndexOfTodo;
@@ -155,4 +156,18 @@ document.querySelector("#btn-cancel-todo-update").addEventListener("click", (e) 
     toggleHideOrShowInputToEditToDoInfo();
     toggleAddTaskButton(true);
     preventAddOrChangeProject(false);
+});
+
+// Menu buttons
+document.getElementById("all-tasks").addEventListener("click", () => {
+    displayAllTodos();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Display "Add Project" button and hide input form in the initial page load
+    document.getElementById("add-project-button").style.display = "flex";
+    document.getElementById("project-name-input-form").style.display = "none";
+
+    // Initial page load
+    displayAllTodos();
 });
