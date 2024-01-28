@@ -11,7 +11,8 @@ import {
     displayAllTodos,
 } from "./modules/dom-manager.js";
 
-let dataIndexOfTodo;
+let todoDataIndex;
+let projectDataIndex;
 
 // Handle click on the "Add Project" button in the Projects Menu
 const handleClickOnAddProjectNameBtn = (e) => {
@@ -46,7 +47,7 @@ const getToDoInfoFromForm = (e, formID) => {
             dueDate = document.getElementById("edit-due-date").value;
 
             // isCompleted here will get the todo status of checked (or not) and keep it when submitting the updated todo info
-            isCompleted = projects[dataIndexOfLastProjectClicked].todos[dataIndexOfTodo].isCompleted;
+            isCompleted = projects[projectDataIndex].todos[todoDataIndex].isCompleted;
 
             break;
         default:
@@ -72,23 +73,20 @@ function fillFormFieldsWithTodoInfo(todo) {
 
 // Handles a click on the edit todo button, allowing the
 // user to change the information of each individual todo
-const handleEditTodoClick = (e) => {
+const handleEditTodoClick = (todoDataIndex, projectDataIndex) => {
     toggleHideOrShowInputToEditToDoInfo();
     toggleAddTaskButton(false);
     preventAddOrChangeProject(true);
 
     const projectsArray = projectsAndToDosManager.getProjects();
 
-    dataIndexOfTodo = e.target.closest(".todo").dataset.index;
-    const infoOfTodoToEdit = projectsArray[dataIndexOfLastProjectClicked].todos[dataIndexOfTodo];
+    const infoOfTodoToEdit = projectsArray[projectDataIndex].todos[todoDataIndex];
 
     fillFormFieldsWithTodoInfo(infoOfTodoToEdit);
 };
 
-const handleDeleteTodoClick = (e) => {
-    dataIndexOfTodo = e.target.closest(".todo").dataset.index;
-
-    projectsAndToDosManager.deleteTodo(dataIndexOfLastProjectClicked, dataIndexOfTodo);
+const handleDeleteTodoClick = (todoDataIndex, projectDataIndex) => {
+    projectsAndToDosManager.deleteTodo(projectDataIndex, todoDataIndex);
 };
 
 // Button to create a new project ("Add Project" button)
@@ -125,7 +123,7 @@ document.querySelector("#edit-todo-form").addEventListener("submit", (e) => {
     const formID = "edit-todo-form";
     const updatedTodoInfo = getToDoInfoFromForm(e, formID);
 
-    projectsAndToDosManager.updateTodoInfo(updatedTodoInfo, dataIndexOfLastProjectClicked, dataIndexOfTodo);
+    projectsAndToDosManager.updateTodoInfo(updatedTodoInfo, projectDataIndex, todoDataIndex);
 
     toggleHideOrShowInputToEditToDoInfo();
     toggleAddTaskButton(true);
@@ -135,12 +133,19 @@ document.querySelector("#edit-todo-form").addEventListener("submit", (e) => {
 
 document.querySelector("body").addEventListener("click", (e) => {
     if (e.target.className === "edit-to-do") {
-        handleEditTodoClick(e);
+        // Get targeted html todo data-index and project data-index
+        todoDataIndex = e.target.closest(".todo").dataset.todoIndex;
+        projectDataIndex = e.target.closest(".todo").dataset.projectIndex;
+        handleEditTodoClick(todoDataIndex, projectDataIndex);
+
         return;
     }
 
     if (e.target.className === "delete-to-do") {
-        handleDeleteTodoClick(e);
+        // Get targeted html todo data-index and project data-index
+        todoDataIndex = e.target.closest(".todo").dataset.todoIndex;
+        projectDataIndex = e.target.closest(".todo").dataset.projectIndex;
+        handleDeleteTodoClick(todoDataIndex, projectDataIndex);
     }
 });
 
