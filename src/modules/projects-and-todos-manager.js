@@ -1,6 +1,11 @@
 "use strict";
 
-import { appendProjectNameToDOM, displayTodosOfAProject } from "./dom-manager";
+import {
+    appendProjectNameToDOM,
+    displayTodosOfAProject,
+    dataIndexOfLastProjectClicked,
+    displayAllTodos,
+} from "./dom-manager";
 import { populateStorage } from "./storage";
 
 // This function manages an array of projects (an array of to-do items)
@@ -40,41 +45,45 @@ const projectsAndToDosManager = () => {
         populateStorage(projects);
     };
 
-    const addNewTodoToAProject = (toDoInfo, dataIndexOfTheProject) => {
-        if (dataIndexOfTheProject < 0 || dataIndexOfTheProject >= projects.length) {
+    const addNewTodoToAProject = (toDoInfo, projectDataIndex) => {
+        if (projectDataIndex < 0 || projectDataIndex >= projects.length) {
             alert("Invalid project index");
             return;
         }
 
-        projects[dataIndexOfTheProject].todos.push(toDoInfo);
+        projects[projectDataIndex].todos.push(toDoInfo);
 
-        displayTodosOfAProject(dataIndexOfTheProject);
+        displayTodosOfAProject(projectDataIndex);
         populateStorage(projects);
     };
 
-    const updateTodoInfo = (updatedTodoInfo, dataIndexOfLastProjectClicked, dataIndexOfTodoToUpdate) => {
+    const updateTodoInfo = (updatedTodoInfo, projectDataIndex, dataIndexOfTodoToUpdate) => {
         if (
-            dataIndexOfLastProjectClicked < 0 ||
-            dataIndexOfLastProjectClicked >= projects.length ||
+            projectDataIndex < 0 ||
+            projectDataIndex >= projects.length ||
             dataIndexOfTodoToUpdate < 0 ||
-            dataIndexOfTodoToUpdate > projects[dataIndexOfLastProjectClicked].todos.length
+            dataIndexOfTodoToUpdate > projects[projectDataIndex].todos.length
         ) {
-            alert("Invalid project index");
+            console.log("Invalid project index");
             return;
         }
 
-        projects[dataIndexOfLastProjectClicked].todos.splice(dataIndexOfTodoToUpdate, 1, updatedTodoInfo);
+        projects[projectDataIndex].todos.splice(dataIndexOfTodoToUpdate, 1, updatedTodoInfo);
 
-        displayTodosOfAProject(dataIndexOfLastProjectClicked);
+        // If in "All Tasks" tab, keeps user there... If inside a project, keeps user there
+        dataIndexOfLastProjectClicked === null ? displayAllTodos() : displayTodosOfAProject(projectDataIndex);
+
         populateStorage(projects);
     };
 
-    const deleteTodo = (projectIndex, todoIndex) => {
-        if (projectIndex > -1 || todoIndex > -1) {
-            projects[projectIndex].todos.splice(todoIndex, 1);
+    const deleteTodo = (projectDataIndex, todoDataIndex) => {
+        if (projectDataIndex > -1 || todoDataIndex > -1) {
+            projects[projectDataIndex].todos.splice(todoDataIndex, 1);
         }
 
-        displayTodosOfAProject(projectIndex);
+        // If in "All Tasks" tab, keeps user there... If inside a project, keeps user there
+        dataIndexOfLastProjectClicked === null ? displayAllTodos() : displayTodosOfAProject(projectDataIndex);
+
         populateStorage(projects);
     };
 

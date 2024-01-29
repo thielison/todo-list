@@ -165,6 +165,11 @@ document.querySelector("#btn-cancel-todo-update").addEventListener("click", (e) 
 
 // Menu buttons
 document.getElementById("all-tasks").addEventListener("click", () => {
+    // For validation in updateTodoInfo and deleteTodo functions in the projects-and-todos-manager module
+    // If the last click was in "All Tasks", deleting and updating todo info will keep user on All Tasks page
+    dataIndexOfLastProjectClicked = null;
+
+    toggleAddTaskButton(false);
     displayAllTodos();
 });
 

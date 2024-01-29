@@ -5,7 +5,7 @@ import { format } from "date-fns";
 
 // Export the updated data index of last project clicked
 // This data index will be used to add todos to a specific project
-export let dataIndexOfLastProjectClicked = 0;
+export let dataIndexOfLastProjectClicked = null;
 
 // FUNCTIONS RESPONSIBLE FOR MANAGING PROJECTS
 // Shows or hides both the form to input Project Name and the "Add Project" button
