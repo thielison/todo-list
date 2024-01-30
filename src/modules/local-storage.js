@@ -1,6 +1,6 @@
 "use strict";
 
-import { projects as projectsAndTodosManager } from "./projects-and-todos-manager";
+import { projects as projectsAndTodosManager } from "./project-manager";
 
 // This function populates the local storage whenever there is a change in the projects and todos array
 export const populateStorage = (projectsAndTodosArray) => {

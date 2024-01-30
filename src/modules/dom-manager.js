@@ -1,6 +1,6 @@
 "use strict";
 
-import { projects as projectsAndTodosManager } from "./projects-and-todos-manager.js";
+import { projects as projectsAndTodosManager } from "./project-manager.js";
 import { format } from "date-fns";
 
 // Export the updated data index of last project clicked

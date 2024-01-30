@@ -1,6 +1,6 @@
 "use strict";
 
-import { projects as projectsAndToDosManager } from "./modules/projects-and-todos-manager.js";
+import { projects as projectsAndToDosManager } from "./modules/project-manager.js";
 import {
     dataIndexOfLastProjectClicked,
     toggleHideOrShowInputForProjectName,
@@ -10,7 +10,7 @@ import {
     preventAddOrChangeProject,
     displayAllTodos,
 } from "./modules/dom-manager.js";
-import { handleMenuButtonsClick } from "./modules/home-menu-button-handlers.js";
+import { handleMenuButtonsClick } from "./modules/home-menu-handlers.js";
 
 const homeMenuButtons = document.querySelectorAll("ul.home-menu > li");
 let todoDataIndex;

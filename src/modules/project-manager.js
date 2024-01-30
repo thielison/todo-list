@@ -6,7 +6,7 @@ import {
     dataIndexOfLastProjectClicked,
     displayAllTodos,
 } from "./dom-manager";
-import { populateStorage } from "./storage";
+import { populateStorage } from "./local-storage";
 
 // This function manages an array of projects (an array of to-do items)
 // Each element in the array is an object with an id, projectName, and todos
