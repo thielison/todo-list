@@ -10,7 +10,9 @@ import {
     preventAddOrChangeProject,
     displayAllTodos,
 } from "./modules/dom-manager.js";
+import { handleMenuButtonsClick } from "./modules/home-menu-button-handlers.js";
 
+const homeMenuButtons = document.querySelectorAll("ul.home-menu > li");
 let todoDataIndex;
 let projectDataIndex;
 
@@ -149,7 +151,6 @@ document.querySelector("body").addEventListener("click", (e) => {
     }
 });
 
-// Handle click on cancel todo button
 document.querySelector("#btn-cancel-todo").addEventListener("click", (e) => {
     e.preventDefault();
     toggleHideOrShowInputForToDoInfo();
@@ -163,16 +164,6 @@ document.querySelector("#btn-cancel-todo-update").addEventListener("click", (e) 
     preventAddOrChangeProject(false);
 });
 
-// Menu buttons
-document.getElementById("all-tasks").addEventListener("click", () => {
-    // For validation in updateTodoInfo and deleteTodo functions in the projects-and-todos-manager module
-    // If the last click was in "All Tasks", deleting and updating todo info will keep user on All Tasks page
-    dataIndexOfLastProjectClicked = null;
-
-    toggleAddTaskButton(false);
-    displayAllTodos();
-});
-
 document.addEventListener("DOMContentLoaded", () => {
     // Display "Add Project" button and hide input form in the initial page load
     document.getElementById("add-project-button").style.display = "flex";
@@ -180,4 +171,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Initial page load
     displayAllTodos();
+});
+
+// Menu buttons
+homeMenuButtons.forEach((button) => {
+    button.addEventListener("click", handleMenuButtonsClick);
 });
