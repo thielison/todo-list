@@ -1,6 +1,6 @@
 import { dataIndexOfLastProjectClicked, toggleAddTaskButton, displayTodos } from "./dom-manager";
 import { projects as projectsAndTodosManager } from "./project-manager";
-import { isEqual } from "date-fns";
+import { isEqual, startOfWeek, endOfWeek, isWithinInterval } from "date-fns";
 
 const allTasks = () => {
     // For validation in updateTodoInfo and deleteTodo functions in the project-manager module
@@ -41,7 +41,31 @@ const today = () => {
 };
 
 const thisWeek = () => {
-    console.log("This week");
+    const projects = projectsAndTodosManager.getProjects();
+
+    let today = new Date();
+
+    const weekStart = startOfWeek(today, { weekStartsOn: 0 });
+    const weekEnd = endOfWeek(today, { weekStartsOn: 0 });
+
+    const taskList = document.querySelector(".task-list");
+    taskList.textContent = "";
+
+    projects.forEach((project) => {
+        project.todos.forEach((todo) => {
+            const isTodoDueThisWeek = isWithinInterval(todo.dueDate, {
+                start: weekStart,
+                end: weekEnd,
+            });
+
+            if (isTodoDueThisWeek) {
+                let projectId = project.id;
+                let todoIndex = projects[projectId].todos.indexOf(todo);
+
+                displayTodos("todosDueThisWeek", projectId, todoIndex);
+            }
+        });
+    });
 };
 
 const important = () => {

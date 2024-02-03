@@ -334,6 +334,21 @@ const displayTodos = (display, projectIndex, todoIndex) => {
         updateTaskCount(numOfTodos);
     };
 
+    const displayTodosDueThisWeek = () => {
+        tasksHeader.textContent = "This Week";
+
+        const taskList = document.querySelector(".task-list");
+
+        const ul = document.createElement("ul");
+        const li = createTodoElements(projectIndex, todoIndex);
+
+        ul.append(li);
+        taskList.append(ul);
+
+        const numOfTodos = document.querySelectorAll(".task-list ul li").length;
+        updateTaskCount(numOfTodos);
+    };
+
     if (display === "singleProjectTodos") {
         displaySingleProjectTodos();
         return;
@@ -346,6 +361,11 @@ const displayTodos = (display, projectIndex, todoIndex) => {
 
     if (display === "todosDueToday") {
         displayTodosDueToday();
+        return;
+    }
+
+    if (display === "todosDueThisWeek") {
+        displayTodosDueThisWeek();
         return;
     }
 };
