@@ -8,7 +8,7 @@ import {
     toggleHideOrShowInputToEditToDoInfo,
     toggleAddTaskButton,
     preventAddOrChangeProject,
-    displayAllTodos,
+    displayTodos,
 } from "./modules/dom-manager.js";
 import { handleMenuButtonsClick } from "./modules/home-menu-handlers.js";
 
@@ -169,8 +169,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("add-project-button").style.display = "flex";
     document.getElementById("project-name-input-form").style.display = "none";
 
-    // Initial page load
-    displayAllTodos();
+    // Initial page load - Display all projects todos
+    displayTodos("allProjectsTodos");
 });
 
 // Menu buttons

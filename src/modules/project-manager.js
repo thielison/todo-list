@@ -1,11 +1,6 @@
 "use strict";
 
-import {
-    appendProjectNameToDOM,
-    displayTodosOfAProject,
-    dataIndexOfLastProjectClicked,
-    displayAllTodos,
-} from "./dom-manager";
+import { appendProjectNameToDOM, dataIndexOfLastProjectClicked, displayTodos } from "./dom-manager";
 import { populateStorage } from "./local-storage";
 
 // This function manages an array of projects (an array of to-do items)
@@ -53,7 +48,7 @@ const projectsAndToDosManager = () => {
 
         projects[projectDataIndex].todos.push(toDoInfo);
 
-        displayTodosOfAProject(projectDataIndex);
+        displayTodos("singleProjectTodos", projectDataIndex);
         populateStorage(projects);
     };
 
@@ -71,7 +66,9 @@ const projectsAndToDosManager = () => {
         projects[projectDataIndex].todos.splice(dataIndexOfTodoToUpdate, 1, updatedTodoInfo);
 
         // If in "All Tasks" tab, keeps user there... If inside a project, keeps user there
-        dataIndexOfLastProjectClicked === null ? displayAllTodos() : displayTodosOfAProject(projectDataIndex);
+        dataIndexOfLastProjectClicked === null
+            ? displayTodos("allProjectsTodos")
+            : displayTodos("singleProjectTodos", projectDataIndex);
 
         populateStorage(projects);
     };
@@ -82,7 +79,9 @@ const projectsAndToDosManager = () => {
         }
 
         // If in "All Tasks" tab, keeps user there... If inside a project, keeps user there
-        dataIndexOfLastProjectClicked === null ? displayAllTodos() : displayTodosOfAProject(projectDataIndex);
+        dataIndexOfLastProjectClicked === null
+            ? displayTodos("allProjectsTodos")
+            : displayTodos("singleProjectTodos", projectDataIndex);
 
         populateStorage(projects);
     };

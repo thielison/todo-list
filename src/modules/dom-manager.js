@@ -64,7 +64,7 @@ const projectNameClickEventHandler = () => {
     const projectNameClicked = (event) => {
         dataIndexOfLastProjectClicked = event.target.dataset.index;
         updateProjectsHeaderOnPage(dataIndexOfLastProjectClicked);
-        displayTodosOfAProject(dataIndexOfLastProjectClicked);
+        displayTodos("singleProjectTodos", dataIndexOfLastProjectClicked);
         toggleAddTaskButton(true);
     };
 
@@ -107,13 +107,13 @@ const handleClickOnDeleteProjectButton = (e) => {
     projectsAndTodosManager.removeProject(e.target.parentElement.dataset.index);
 
     // Project deleted, so taskCount = 0
-    updateProjectTaskCount(0);
+    updateTaskCount(0);
 
     // Clear all todos displayed in the page after deleting the project
     clearTaskList();
 
     // Returns to initial page displaying all tasks
-    displayAllTodos();
+    displayTodos("allProjectsTodos");
 
     // Hides add task button to prevent adding todos to inexistent project
     toggleAddTaskButton();
@@ -174,9 +174,9 @@ const appendProjectNameToDOM = (projectName, index) => {
 };
 
 // This function will keep track of the number of todos inside a project
-const updateProjectTaskCount = (numOfToDosInsideAProject) => {
+const updateTaskCount = (numOfTodos) => {
     const taskCountSpan = document.getElementById("task-count");
-    taskCountSpan.textContent = numOfToDosInsideAProject;
+    taskCountSpan.textContent = numOfTodos;
 };
 
 // FUNCTIONS RESPONSIBLE FOR MANAGING TO DOS
@@ -197,179 +197,157 @@ const clearTaskList = () => {
     return taskList;
 };
 
-// This function, when called, creates elements to display all the todos inside a specific project
-const displayTodosOfAProject = (dataIndex) => {
+// Functions responsible for creating DOM elements
+const createTodoLeftSide = (projectIndex, todoIndex) => {
     const projectsAndTodosArray = projectsAndTodosManager.getProjects();
 
-    const taskList = clearTaskList();
+    const todoLeftSide = document.createElement("div");
+    todoLeftSide.className = "todo-left-side";
 
-    const ul = document.createElement("ul");
+    // Create a div that will contain the todo checkbox
+    const checkboxDiv = document.createElement("div");
 
-    for (let i = 0; i < projectsAndTodosArray[dataIndex].todos.length; i++) {
-        const li = document.createElement("li");
-        li.setAttribute("data-project-index", dataIndex);
-        li.setAttribute("data-todo-index", i);
-        li.className = "todo";
+    const checkbox = document.createElement("input");
+    checkbox.setAttribute("type", "checkbox");
+    checkbox.setAttribute("id", `project[${projectIndex}]-todo[${todoIndex}]`);
+    checkbox.setAttribute("name", `todo-checkbox`);
 
-        // Todo left side
-        const todoLeftSide = document.createElement("div");
-        todoLeftSide.className = "todo-left-side";
+    // Each todo checkbox will have its own event listener
+    // This allows to toggle each todo as completed or not
+    checkbox.addEventListener("change", onTodoCheckboxChange);
 
-        // Create a div that will contain the todo checkbox
-        const checkboxDiv = document.createElement("div");
-
-        const checkbox = document.createElement("input");
-        checkbox.setAttribute("type", "checkbox");
-        checkbox.setAttribute("id", `project[${dataIndex}]-todo[${i}]`);
-        checkbox.setAttribute("name", `todo-checkbox`);
-
-        // Each todo checkbox will have its own event listener
-        // This allows to toggle each todo as completed or not
-        checkbox.addEventListener("change", onTodoCheckboxChange);
-
-        const todoIsChecked = projectsAndTodosArray[dataIndex].todos[i].isCompleted;
-        if (todoIsChecked) {
-            checkbox.checked = true;
-        }
-
-        checkboxDiv.append(checkbox);
-
-        // Create a div that will contain the todo title and description
-        const todoTitleAndDescriptionDiv = document.createElement("div");
-        todoTitleAndDescriptionDiv.classList = "todo-title-and-description-div";
-
-        const todoTitleLabel = document.createElement("label");
-        todoTitleLabel.setAttribute("for", `project[${dataIndex}]-todo[${i}]`);
-        todoTitleLabel.textContent = projectsAndTodosArray[dataIndex].todos[i].title;
-
-        const todoDescriptionPara = document.createElement("p");
-        todoDescriptionPara.className = "todo-description";
-        todoDescriptionPara.textContent = projectsAndTodosArray[dataIndex].todos[i].description;
-        // Append title and description to the todoTitleAndDescriptionDiv
-        todoTitleAndDescriptionDiv.append(todoTitleLabel, todoDescriptionPara);
-        // Append the checkbox div, and the title and description div
-        todoLeftSide.append(checkboxDiv, todoTitleAndDescriptionDiv);
-
-        // Todo right side
-        const todoRightSide = document.createElement("div");
-        todoRightSide.className = "todo-right-side";
-
-        const dateString = projectsAndTodosArray[dataIndex].todos[i].dueDate;
-        const date = new Date(dateString.replace(/-/g, "/"));
-
-        const dueDate = document.createElement("p");
-        dueDate.textContent = format(date, "dd-MM-yyyy");
-
-        const editTodoBtn = document.createElement("button");
-        editTodoBtn.className = "edit-to-do";
-        editTodoBtn.textContent = "Edit";
-
-        const deleteTodoBtn = document.createElement("button");
-        deleteTodoBtn.className = "delete-to-do";
-        deleteTodoBtn.textContent = "Delete";
-
-        todoRightSide.append(dueDate, editTodoBtn, deleteTodoBtn);
-
-        li.append(todoLeftSide, todoRightSide);
-
-        ul.append(li);
+    const todoIsChecked = projectsAndTodosArray[projectIndex].todos[todoIndex].isCompleted;
+    if (todoIsChecked) {
+        checkbox.checked = true;
     }
 
-    taskList.append(ul);
+    checkboxDiv.append(checkbox);
 
-    const numOfTodosInsideProject = projectsAndTodosArray[dataIndex].todos.length;
-    updateProjectTaskCount(numOfTodosInsideProject);
+    // Create a div that will contain the todo title and description
+    const todoTitleAndDescriptionDiv = document.createElement("div");
+    todoTitleAndDescriptionDiv.classList = "todo-title-and-description-div";
+
+    const todoTitleLabel = document.createElement("label");
+    todoTitleLabel.setAttribute("for", `project[${projectIndex}]-todo[${todoIndex}]`);
+    todoTitleLabel.textContent = projectsAndTodosArray[projectIndex].todos[todoIndex].title;
+
+    const todoDescriptionPara = document.createElement("p");
+    todoDescriptionPara.className = "todo-description";
+    todoDescriptionPara.textContent = projectsAndTodosArray[projectIndex].todos[todoIndex].description;
+    // Append title and description to the todoTitleAndDescriptionDiv
+    todoTitleAndDescriptionDiv.append(todoTitleLabel, todoDescriptionPara);
+    // Append the checkbox div, and the title and description div
+    todoLeftSide.append(checkboxDiv, todoTitleAndDescriptionDiv);
+
+    return todoLeftSide;
 };
 
-const displayAllTodos = () => {
+const createTodoRightSide = (projectIndex, todoIndex) => {
     const projectsAndTodosArray = projectsAndTodosManager.getProjects();
 
+    const todoRightSide = document.createElement("div");
+    todoRightSide.className = "todo-right-side";
+
+    const dateString = projectsAndTodosArray[projectIndex].todos[todoIndex].dueDate;
+    const date = new Date(dateString.replace(/-/g, "/"));
+
+    const dueDate = document.createElement("p");
+    dueDate.textContent = format(date, "dd-MM-yyyy");
+
+    const editTodoBtn = document.createElement("button");
+    editTodoBtn.className = "edit-to-do";
+    editTodoBtn.textContent = "Edit";
+
+    const deleteTodoBtn = document.createElement("button");
+    deleteTodoBtn.className = "delete-to-do";
+    deleteTodoBtn.textContent = "Delete";
+
+    todoRightSide.append(dueDate, editTodoBtn, deleteTodoBtn);
+
+    return todoRightSide;
+};
+
+const createTodoElements = (projectIndex, todoIndex) => {
+    const li = document.createElement("li");
+    li.setAttribute("data-project-index", projectIndex);
+    li.setAttribute("data-todo-index", todoIndex);
+    li.className = "todo";
+
+    const todoLeftSide = createTodoLeftSide(projectIndex, todoIndex);
+    const todoRightSide = createTodoRightSide(projectIndex, todoIndex);
+
+    li.append(todoLeftSide, todoRightSide);
+
+    return li;
+};
+
+const displayTodos = (display, projectIndex, todoIndex) => {
+    const projectsAndTodosArray = projectsAndTodosManager.getProjects();
     const tasksHeader = document.querySelector(".tasks-container .tasks-header");
-    tasksHeader.textContent = "All Tasks";
 
-    const taskList = clearTaskList();
+    const displaySingleProjectTodos = () => {
+        const taskList = clearTaskList();
+        const ul = document.createElement("ul");
 
-    const ul = document.createElement("ul");
-
-    let tasksCount = 0;
-
-    for (let i = 0; i < projectsAndTodosArray.length; i++) {
-        for (let j = 0; j < projectsAndTodosArray[i].todos.length; j++) {
-            const li = document.createElement("li");
-            li.setAttribute("data-project-index", i);
-            li.setAttribute("data-todo-index", j);
-            li.className = "todo";
-
-            // Todo left side
-            const todoLeftSide = document.createElement("div");
-            todoLeftSide.className = "todo-left-side";
-
-            // Create a div that will contain the todo checkbox
-            const checkboxDiv = document.createElement("div");
-
-            const checkbox = document.createElement("input");
-            checkbox.setAttribute("type", "checkbox");
-            checkbox.setAttribute("id", `project[${i}]-todo[${j}]`);
-            checkbox.setAttribute("name", `todo-checkbox`);
-
-            // Each todo checkbox will have its own event listener
-            // This allows to toggle each todo as completed or not
-            checkbox.addEventListener("change", onTodoCheckboxChange);
-
-            const todoIsChecked = projectsAndTodosArray[i].todos[j].isCompleted;
-            if (todoIsChecked) {
-                checkbox.checked = true;
-            }
-
-            checkboxDiv.append(checkbox);
-
-            // Create a div that will contain the todo title and description
-            const todoTitleAndDescriptionDiv = document.createElement("div");
-            todoTitleAndDescriptionDiv.classList = "todo-title-and-description-div";
-
-            const todoTitleLabel = document.createElement("label");
-            todoTitleLabel.setAttribute("for", `project[${i}]-todo[${j}]`);
-            todoTitleLabel.textContent = projectsAndTodosArray[i].todos[j].title;
-
-            const todoDescriptionPara = document.createElement("p");
-            todoDescriptionPara.className = "todo-description";
-            todoDescriptionPara.textContent = projectsAndTodosArray[i].todos[j].description;
-            // Append title and description to the todoTitleAndDescriptionDiv
-            todoTitleAndDescriptionDiv.append(todoTitleLabel, todoDescriptionPara);
-            // Append the checkbox div, and the title and description div
-            todoLeftSide.append(checkboxDiv, todoTitleAndDescriptionDiv);
-
-            // Todo right side
-            const todoRightSide = document.createElement("div");
-            todoRightSide.className = "todo-right-side";
-
-            const dateString = projectsAndTodosArray[i].todos[j].dueDate;
-            const date = new Date(dateString.replace(/-/g, "/"));
-
-            const dueDate = document.createElement("p");
-            dueDate.textContent = format(date, "dd-MM-yyyy");
-
-            const editTodoBtn = document.createElement("button");
-            editTodoBtn.className = "edit-to-do";
-            editTodoBtn.textContent = "Edit";
-
-            const deleteTodoBtn = document.createElement("button");
-            deleteTodoBtn.className = "delete-to-do";
-            deleteTodoBtn.textContent = "Delete";
-
-            todoRightSide.append(dueDate, editTodoBtn, deleteTodoBtn);
-
-            li.append(todoLeftSide, todoRightSide);
-
+        for (let i = 0; i < projectsAndTodosArray[projectIndex].todos.length; i++) {
+            const li = createTodoElements(projectIndex, i);
             ul.append(li);
-
-            tasksCount++;
         }
+
+        taskList.append(ul);
+
+        const numOfTodos = document.querySelectorAll(".task-list ul li").length;
+        updateTaskCount(numOfTodos);
+    };
+
+    const displayAllProjectsTodos = () => {
+        tasksHeader.textContent = "All Tasks";
+
+        const taskList = clearTaskList();
+        const ul = document.createElement("ul");
+
+        for (let i = 0; i < projectsAndTodosArray.length; i++) {
+            for (let j = 0; j < projectsAndTodosArray[i].todos.length; j++) {
+                const li = createTodoElements(i, j);
+                ul.append(li);
+            }
+        }
+
+        taskList.append(ul);
+
+        const numOfTodos = document.querySelectorAll(".task-list ul li").length;
+        updateTaskCount(numOfTodos);
+    };
+
+    const displayTodosDueToday = () => {
+        tasksHeader.textContent = "Due Today";
+
+        const taskList = document.querySelector(".task-list");
+
+        const ul = document.createElement("ul");
+        const li = createTodoElements(projectIndex, todoIndex);
+
+        ul.append(li);
+        taskList.append(ul);
+
+        const numOfTodos = document.querySelectorAll(".task-list ul li").length;
+        updateTaskCount(numOfTodos);
+    };
+
+    if (display === "singleProjectTodos") {
+        displaySingleProjectTodos();
+        return;
     }
 
-    taskList.append(ul);
+    if (display === "allProjectsTodos") {
+        displayAllProjectsTodos();
+        return;
+    }
 
-    updateProjectTaskCount(tasksCount);
+    if (display === "todosDueToday") {
+        displayTodosDueToday();
+        return;
+    }
 };
 
 export {
@@ -377,8 +355,7 @@ export {
     appendProjectNameToDOM,
     toggleHideOrShowInputForToDoInfo,
     toggleHideOrShowInputToEditToDoInfo,
-    displayTodosOfAProject,
+    displayTodos,
     toggleAddTaskButton,
     preventAddOrChangeProject,
-    displayAllTodos,
 };
