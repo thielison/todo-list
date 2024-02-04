@@ -1,6 +1,6 @@
 import { dataIndexOfLastProjectClicked, toggleAddTaskButton, displayTodos } from "./dom-manager";
 import { projects as projectsAndTodosManager } from "./project-manager";
-import { isEqual, startOfWeek, endOfWeek, isWithinInterval, toDate, format } from "date-fns";
+import { isEqual, startOfWeek, endOfWeek, isWithinInterval, format } from "date-fns";
 
 const allTasks = () => {
     // For validation in updateTodoInfo and deleteTodo functions in the project-manager module
