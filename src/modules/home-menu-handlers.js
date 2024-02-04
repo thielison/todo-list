@@ -16,14 +16,7 @@ const today = () => {
     const taskList = document.querySelector(".task-list");
     taskList.textContent = "";
 
-    let today = new Date();
-
-    // padStart ensure that days and months always have two digits
-    let dd = String(today.getDate()).padStart(2, "0");
-    let mm = String(today.getMonth() + 1).padStart(2, "0"); // January is 0!
-    let yyyy = today.getFullYear();
-
-    today = `${yyyy}-${mm}-${dd}`;
+    let today = format(new Date(), "yyyy-MM-dd");
 
     // For each todo inside a project, if this todo due date is equal to today's date, displays it on page
     projects.forEach((project) => {
