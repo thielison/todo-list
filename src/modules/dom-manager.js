@@ -283,7 +283,6 @@ const createTodoElements = (projectIndex, todoIndex) => {
 
 const displayTodos = (display, projectIndex, todoIndex) => {
     const projectsAndTodosArray = projectsAndTodosManager.getProjects();
-    const tasksHeader = document.querySelector(".tasks-container .tasks-header");
 
     const displaySingleProjectTodos = () => {
         const taskList = clearTaskList();
@@ -301,8 +300,6 @@ const displayTodos = (display, projectIndex, todoIndex) => {
     };
 
     const displayAllProjectsTodos = () => {
-        tasksHeader.textContent = "All Tasks";
-
         const taskList = clearTaskList();
         const ul = document.createElement("ul");
 
@@ -320,8 +317,6 @@ const displayTodos = (display, projectIndex, todoIndex) => {
     };
 
     const displayTodosDueToday = () => {
-        tasksHeader.textContent = "Due Today";
-
         const taskList = document.querySelector(".task-list");
 
         const ul = document.createElement("ul");
@@ -335,8 +330,19 @@ const displayTodos = (display, projectIndex, todoIndex) => {
     };
 
     const displayTodosDueThisWeek = () => {
-        tasksHeader.textContent = "This Week";
+        const taskList = document.querySelector(".task-list");
 
+        const ul = document.createElement("ul");
+        const li = createTodoElements(projectIndex, todoIndex);
+
+        ul.append(li);
+        taskList.append(ul);
+
+        const numOfTodos = document.querySelectorAll(".task-list ul li").length;
+        updateTaskCount(numOfTodos);
+    };
+
+    const displayCompletedTodos = () => {
         const taskList = document.querySelector(".task-list");
 
         const ul = document.createElement("ul");
@@ -367,6 +373,10 @@ const displayTodos = (display, projectIndex, todoIndex) => {
     if (display === "todosDueThisWeek") {
         displayTodosDueThisWeek();
         return;
+    }
+
+    if (display === "todosCompleted") {
+        displayCompletedTodos();
     }
 };
 
