@@ -51,26 +51,30 @@ const toggleAddTaskButton = (show) => {
     addTaskButton.style.display = show ? "block" : "none";
 };
 
+const updateTasksHeader = (sidebarItemClicked) => {
+    const projectsArray = projectsAndTodosManager.getProjects();
+    const tasksHeader = document.querySelector(".tasks-container .tasks-header");
+
+    // If sidebarItemClicked is a number, so it is a project clicked (project index)
+    if (!isNaN(sidebarItemClicked)) {
+        let projectIndex = sidebarItemClicked;
+        tasksHeader.textContent = projectsArray[projectIndex].projectName;
+        return;
+    }
+
+    // If sidebarItemClicked is a string, so it is a menu item clicked
+    if (typeof sidebarItemClicked === "string") {
+        let menuItem = sidebarItemClicked;
+        tasksHeader.textContent = menuItem;
+    }
+};
+
 // Define a function to handle project name clicks
-const projectNameClickEventHandler = () => {
-    // Update the tasks header with the project name
-    const updateProjectsHeaderOnPage = (index) => {
-        const projectsArray = projectsAndTodosManager.getProjects();
-        const tasksHeader = document.querySelector(".tasks-container .tasks-header");
-        tasksHeader.textContent = projectsArray[index].projectName;
-    };
-
-    // Handle a project name click event
-    const projectNameClicked = (event) => {
-        dataIndexOfLastProjectClicked = event.target.dataset.index;
-        updateProjectsHeaderOnPage(dataIndexOfLastProjectClicked);
-        displayTodos("singleProjectTodos", dataIndexOfLastProjectClicked);
-        toggleAddTaskButton(true);
-    };
-
-    return {
-        projectNameClicked,
-    };
+const projectNameClickEventHandler = (e) => {
+    dataIndexOfLastProjectClicked = e.target.dataset.index;
+    updateTasksHeader(dataIndexOfLastProjectClicked);
+    displayTodos("singleProjectTodos", dataIndexOfLastProjectClicked);
+    toggleAddTaskButton(true);
 };
 
 // Depending on the boolean passed as an argument, this function will add or
@@ -146,8 +150,7 @@ const addEventListenerToProjectNameListItem = (li) => {
             handleClickOnDeleteProjectButton(e);
             return;
         } else {
-            const projectsEventHandler = projectNameClickEventHandler();
-            projectsEventHandler.projectNameClicked(e);
+            projectNameClickEventHandler(e);
         }
     });
 };
@@ -388,4 +391,6 @@ export {
     displayTodos,
     toggleAddTaskButton,
     preventAddOrChangeProject,
+    updateTaskCount,
+    updateTasksHeader,
 };

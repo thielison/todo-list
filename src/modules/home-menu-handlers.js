@@ -1,4 +1,10 @@
-import { dataIndexOfLastProjectClicked, toggleAddTaskButton, displayTodos } from "./dom-manager";
+import {
+    dataIndexOfLastProjectClicked,
+    toggleAddTaskButton,
+    displayTodos,
+    updateTaskCount,
+    updateTasksHeader,
+} from "./dom-manager";
 import { projects as projectsAndTodosManager } from "./project-manager";
 import { isEqual, startOfWeek, endOfWeek, isWithinInterval, format } from "date-fns";
 
@@ -77,7 +83,6 @@ const completed = () => {
 
     projects.forEach((project) => {
         project.todos.forEach((todo) => {
-            console.log(todo);
             if (todo.isCompleted) {
                 let projectId = project.id;
                 let todoIndex = projects[projectId].todos.indexOf(todo);
@@ -92,28 +97,30 @@ const handleMenuButtonsClick = (e) => {
     // Hide add task button when clicking on menu buttons
     toggleAddTaskButton(false);
 
-    const tasksHeader = document.querySelector(".tasks-container .tasks-header");
+    // Each menu button clicked will reset task count
+    // This prevents showing task count > 0 if there isn't tasks in this tab
+    updateTaskCount(0);
 
     let buttonId = e.target.id;
-
     switch (buttonId) {
         case "all-tasks":
-            tasksHeader.textContent = "All Tasks";
+            updateTasksHeader("All Tasks");
             allTasks();
             break;
         case "today":
-            tasksHeader.textContent = "Due Today";
+            updateTasksHeader("Due Today");
             today();
             break;
         case "this-week":
-            tasksHeader.textContent = "This Week";
+            updateTasksHeader("This Week");
             thisWeek();
             break;
         case "important":
+            updateTasksHeader("Important Todos");
             important();
             break;
         case "completed":
-            tasksHeader.textContent = "Completed Todos";
+            updateTasksHeader("Completed Todos");
             completed();
             break;
         default:
