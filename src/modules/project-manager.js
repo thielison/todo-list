@@ -2,6 +2,7 @@
 
 import { appendProjectNameToDOM, dataIndexOfLastProjectClicked, displayTodos } from "./dom-manager";
 import { populateStorage } from "./local-storage";
+import { keepLastClickedMenuTab } from "./home-menu-handlers";
 
 // This function manages an array of projects (an array of to-do items)
 // Each element in the array is an object with an id, projectName, and todos
@@ -67,7 +68,7 @@ const projectsAndToDosManager = () => {
 
         // If in "All Tasks" tab, keeps user there... If inside a project, keeps user there
         dataIndexOfLastProjectClicked === null
-            ? displayTodos("allProjectsTodos")
+            ? keepLastClickedMenuTab()
             : displayTodos("singleProjectTodos", projectDataIndex);
 
         populateStorage(projects);
@@ -80,7 +81,7 @@ const projectsAndToDosManager = () => {
 
         // If in "All Tasks" tab, keeps user there... If inside a project, keeps user there
         dataIndexOfLastProjectClicked === null
-            ? displayTodos("allProjectsTodos")
+            ? keepLastClickedMenuTab()
             : displayTodos("singleProjectTodos", projectDataIndex);
 
         populateStorage(projects);

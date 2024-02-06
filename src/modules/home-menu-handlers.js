@@ -8,12 +8,10 @@ import {
 import { projects as projectsAndTodosManager } from "./project-manager";
 import { isEqual, startOfWeek, endOfWeek, isWithinInterval, format } from "date-fns";
 
-const allTasks = () => {
-    // For validation in updateTodoInfo and deleteTodo functions in the project-manager module
-    // If the last click was in "All Tasks", deleting or updating todo info will keep user on All Tasks page
-    dataIndexOfLastProjectClicked = null;
+let lastMenuItemClicked;
 
-    displayTodos("allProjectsTodos");
+const allTasks = () => {
+    displayTodos(lastMenuItemClicked);
 };
 
 const today = () => {
@@ -73,10 +71,16 @@ const thisWeek = () => {
 
 const important = () => {
     console.log("Important");
+    const taskList = document.querySelector(".task-list");
+    taskList.textContent = "";
 };
 
 const completed = () => {
     const projects = projectsAndTodosManager.getProjects();
+
+    // For validation in updateTodoInfo and deleteTodo functions in the project-manager module
+    // If the last click was in "All Tasks", deleting or updating todo info will keep user on All Tasks page
+    dataIndexOfLastProjectClicked = null;
 
     const taskList = document.querySelector(".task-list");
     taskList.textContent = "";
@@ -104,22 +108,27 @@ const handleMenuButtonsClick = (e) => {
     let buttonId = e.target.id;
     switch (buttonId) {
         case "all-tasks":
+            lastMenuItemClicked = "allProjectsTodos";
             updateTasksHeader("All Tasks");
             allTasks();
             break;
         case "today":
+            lastMenuItemClicked = "todosDueToday";
             updateTasksHeader("Due Today");
             today();
             break;
         case "this-week":
+            lastMenuItemClicked = "todosDueThisWeek";
             updateTasksHeader("This Week");
             thisWeek();
             break;
         case "important":
+            lastMenuItemClicked = "importantTodos";
             updateTasksHeader("Important Todos");
             important();
             break;
         case "completed":
+            lastMenuItemClicked = "todosCompleted";
             updateTasksHeader("Completed Todos");
             completed();
             break;
@@ -128,4 +137,36 @@ const handleMenuButtonsClick = (e) => {
     }
 };
 
-export { handleMenuButtonsClick };
+const keepLastClickedMenuTab = () => {
+    let header;
+    switch (lastMenuItemClicked) {
+        case "allProjectsTodos":
+            header = "All Tasks";
+            allTasks();
+            break;
+        case "todosDueToday":
+            header = "Due Today";
+            today();
+            break;
+        case "todosDueThisWeek":
+            header = "This Week";
+            thisWeek();
+            break;
+        case "importantTodos":
+            header = "Important Todos";
+            important();
+            break;
+        case "todosCompleted":
+            header = "Completed Todos";
+            completed();
+            break;
+        default:
+            console.log("Invalid button ID");
+            return;
+    }
+
+    updateTasksHeader(header);
+};
+
+export { handleMenuButtonsClick, keepLastClickedMenuTab };
+export { lastMenuItemClicked };
