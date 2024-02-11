@@ -2,7 +2,7 @@
     --main-font-family: 'Inter', sans-serif;
     --menu-padding: 0.4rem 0.4rem 0.4rem 2.8rem;
     --menu-images-position: 10px;
-    --menu-icons-bgsize: 18px;
+    --menu-icons-bgsize: 20px;
 }
 
 * {
@@ -113,7 +113,7 @@ ul, li {
 }
 
 .main-content .menu .home-menu li:nth-child(4) {
-    background-image: url("images/important.png");
+    background-image: url("images/star-filled.png");
 }
 
 .main-content .menu .home-menu li:nth-child(5) {
@@ -232,6 +232,21 @@ div.tasks-container {
 .tasks-container .add-task-button:hover,
 .tasks-container .task-list .todo-right-side button {
     cursor: pointer;
+}
+
+.tasks-container .task-list .todo-right-side button.star-btn  {
+    background: none;
+    border: none;
+    background-image: url("./images/star.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    width: 20px;
+    height: 20px;
+}
+
+.tasks-container .task-list .todo-right-side button.star-btn.important {
+    /* If todo is set to important */
+    background-image: url("./images/star-filled.png");
 }
 
 .tasks-container .todo-input-information-container,
