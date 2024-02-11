@@ -4,6 +4,18 @@ import { appendProjectNameToDOM, dataIndexOfLastProjectClicked, displayTodos } f
 import { populateStorage } from "./local-storage";
 import { keepLastClickedMenuTab } from "./home-menu-handlers";
 
+const manageUserLocation = (projectIndex) => {
+    // If no project was clicked (dataIndexOfLastProjectClicked === null),
+    // keep the last clicked menu tab when updating or deleting a todo.
+    // If a project was clicked (dataIndexOfLastProjectClicked !== null),
+    // the user will remain in that project.
+    if (dataIndexOfLastProjectClicked === null) {
+        keepLastClickedMenuTab();
+    } else {
+        displayTodos("singleProjectTodos", projectIndex);
+    }
+};
+
 // This function manages an array of projects (an array of to-do items)
 // Each element in the array is an object with an id, projectName, and todos
 const projectsAndToDosManager = () => {
@@ -66,11 +78,7 @@ const projectsAndToDosManager = () => {
 
         projects[projectDataIndex].todos.splice(dataIndexOfTodoToUpdate, 1, updatedTodoInfo);
 
-        // If in "All Tasks" tab, keeps user there... If inside a project, keeps user there
-        dataIndexOfLastProjectClicked === null
-            ? keepLastClickedMenuTab()
-            : displayTodos("singleProjectTodos", projectDataIndex);
-
+        manageUserLocation(projectDataIndex);
         populateStorage(projects);
     };
 
@@ -79,16 +87,19 @@ const projectsAndToDosManager = () => {
             projects[projectDataIndex].todos.splice(todoDataIndex, 1);
         }
 
-        // If in "All Tasks" tab, keeps user there... If inside a project, keeps user there
-        dataIndexOfLastProjectClicked === null
-            ? keepLastClickedMenuTab()
-            : displayTodos("singleProjectTodos", projectDataIndex);
-
+        manageUserLocation(projectDataIndex);
         populateStorage(projects);
     };
 
     const toggleTodoCompletion = (projectIndex, todoIndex, todoIsCompleted) => {
         projects[projectIndex].todos[todoIndex].isCompleted = todoIsCompleted;
+        populateStorage(projects);
+
+        manageUserLocation(projectIndex);
+    };
+
+    const toggleTodoImportance = (projectIndex, todoIndex, todoIsImportant) => {
+        projects[projectIndex].todos[todoIndex].isImportant = todoIsImportant;
         populateStorage(projects);
     };
 
@@ -100,6 +111,7 @@ const projectsAndToDosManager = () => {
         updateTodoInfo,
         deleteTodo,
         toggleTodoCompletion,
+        toggleTodoImportance,
     };
 };
 

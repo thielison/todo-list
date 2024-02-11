@@ -1,14 +1,8 @@
-import {
-    dataIndexOfLastProjectClicked,
-    toggleAddTaskButton,
-    displayTodos,
-    updateTaskCount,
-    updateTasksHeader,
-} from "./dom-manager";
+import { toggleAddTaskButton, displayTodos, updateTaskCount, updateTasksHeader } from "./dom-manager";
 import { projects as projectsAndTodosManager } from "./project-manager";
 import { isEqual, startOfWeek, endOfWeek, isWithinInterval, format } from "date-fns";
 
-let lastMenuItemClicked;
+let lastMenuItemClicked = "allProjectsTodos";
 
 const allTasks = () => {
     displayTodos(lastMenuItemClicked);
@@ -70,17 +64,25 @@ const thisWeek = () => {
 };
 
 const important = () => {
-    console.log("Important");
+    const projects = projectsAndTodosManager.getProjects();
+
     const taskList = document.querySelector(".task-list");
     taskList.textContent = "";
+
+    projects.forEach((project) => {
+        project.todos.forEach((todo) => {
+            if (todo.isImportant) {
+                let projectId = project.id;
+                let todoIndex = projects[projectId].todos.indexOf(todo);
+
+                displayTodos("importantTodos", projectId, todoIndex);
+            }
+        });
+    });
 };
 
 const completed = () => {
     const projects = projectsAndTodosManager.getProjects();
-
-    // For validation in updateTodoInfo and deleteTodo functions in the project-manager module
-    // If the last click was in "All Tasks", deleting or updating todo info will keep user on All Tasks page
-    dataIndexOfLastProjectClicked = null;
 
     const taskList = document.querySelector(".task-list");
     taskList.textContent = "";
@@ -91,7 +93,7 @@ const completed = () => {
                 let projectId = project.id;
                 let todoIndex = projects[projectId].todos.indexOf(todo);
 
-                displayTodos("todosCompleted", projectId, todoIndex);
+                displayTodos("completedTodos", projectId, todoIndex);
             }
         });
     });
@@ -169,4 +171,3 @@ const keepLastClickedMenuTab = () => {
 };
 
 export { handleMenuButtonsClick, keepLastClickedMenuTab };
-export { lastMenuItemClicked };

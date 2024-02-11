@@ -3,8 +3,10 @@
 import { projects as projectsAndTodosManager } from "./project-manager.js";
 import { format } from "date-fns";
 
-// Export the updated data index of last project clicked
-// This data index will be used to add todos to a specific project
+// Export the updated data index of the last project clicked.
+// This index will be used to add todos to the last specific project clicked.
+// It will also keep the user inside a specific project or a specific home menu tab
+// when updating or deleting a todo.
 export let dataIndexOfLastProjectClicked = null;
 
 // FUNCTIONS RESPONSIBLE FOR MANAGING PROJECTS
@@ -120,7 +122,7 @@ const handleClickOnDeleteProjectButton = (e) => {
     displayTodos("allProjectsTodos");
 
     // Hides add task button to prevent adding todos to inexistent project
-    toggleAddTaskButton();
+    toggleAddTaskButton(false);
 };
 
 // Delete project on each project name on the DOM
@@ -191,6 +193,16 @@ const onTodoCheckboxChange = (e) => {
     const todoIndex = e.target.closest(".todo").dataset.todoIndex;
 
     projectsAndTodosManager.toggleTodoCompletion(projectIndex, todoIndex, isCompleted);
+};
+
+const toggleStarColor = (e, todoIsImportant) => {
+    const starElement = e.target;
+
+    if (todoIsImportant) {
+        starElement.classList.add("important");
+    } else {
+        starElement.classList.remove("important");
+    }
 };
 
 const clearTaskList = () => {
@@ -265,7 +277,15 @@ const createTodoRightSide = (projectIndex, todoIndex) => {
     deleteTodoBtn.className = "delete-to-do";
     deleteTodoBtn.textContent = "Delete";
 
-    todoRightSide.append(dueDate, editTodoBtn, deleteTodoBtn);
+    const isImportantStarBtn = document.createElement("button");
+    isImportantStarBtn.className = "star-btn";
+    // Keeps last todo status (yellow star or not) when reloading the page
+    const todoIsImportant = projectsAndTodosArray[projectIndex].todos[todoIndex].isImportant;
+    if (todoIsImportant) {
+        isImportantStarBtn.classList.add("important");
+    }
+
+    todoRightSide.append(dueDate, editTodoBtn, deleteTodoBtn, isImportantStarBtn);
 
     return todoRightSide;
 };
@@ -345,6 +365,19 @@ const displayTodos = (display, projectIndex, todoIndex) => {
         updateTaskCount(numOfTodos);
     };
 
+    const displayImportantTodos = () => {
+        const taskList = document.querySelector(".task-list");
+
+        const ul = document.createElement("ul");
+        const li = createTodoElements(projectIndex, todoIndex);
+
+        ul.append(li);
+        taskList.append(ul);
+
+        const numOfTodos = document.querySelectorAll(".task-list ul li").length;
+        updateTaskCount(numOfTodos);
+    };
+
     const displayCompletedTodos = () => {
         const taskList = document.querySelector(".task-list");
 
@@ -378,7 +411,11 @@ const displayTodos = (display, projectIndex, todoIndex) => {
         return;
     }
 
-    if (display === "todosCompleted") {
+    if (display === "importantTodos") {
+        displayImportantTodos();
+    }
+
+    if (display === "completedTodos") {
         displayCompletedTodos();
     }
 };
@@ -393,4 +430,5 @@ export {
     preventAddOrChangeProject,
     updateTaskCount,
     updateTasksHeader,
+    toggleStarColor,
 };

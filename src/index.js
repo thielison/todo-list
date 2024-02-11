@@ -9,6 +9,7 @@ import {
     toggleAddTaskButton,
     preventAddOrChangeProject,
     displayTodos,
+    toggleStarColor,
 } from "./modules/dom-manager.js";
 import { handleMenuButtonsClick } from "./modules/home-menu-handlers.js";
 
@@ -32,7 +33,7 @@ const getToDoInfoFromForm = (e, formID) => {
     e.preventDefault();
 
     const formData = new FormData(document.getElementById(formID));
-    let title, description, dueDate, isCompleted;
+    let title, description, dueDate, isCompleted, isImportant;
 
     switch (formID) {
         case "todo-input-form":
@@ -40,6 +41,7 @@ const getToDoInfoFromForm = (e, formID) => {
             description = formData.get("description");
             dueDate = document.getElementById("due-date").value;
             isCompleted = false;
+            isImportant = false;
             break;
         case "edit-todo-form":
             const projects = projectsAndToDosManager.getProjects();
@@ -48,15 +50,17 @@ const getToDoInfoFromForm = (e, formID) => {
             description = formData.get("edit-description");
             dueDate = document.getElementById("edit-due-date").value;
 
-            // isCompleted here will get the todo status of checked (or not) and keep it when submitting the updated todo info
+            // isCompleted and isImportant here will get if the todo status is checked/important
+            // (or not) and keep it when submitting the updated todo info
             isCompleted = projects[projectDataIndex].todos[todoDataIndex].isCompleted;
+            isImportant = projects[projectDataIndex].todos[todoDataIndex].isImportant;
 
             break;
         default:
             alert("Error getting info from form!");
     }
 
-    return { title, description, dueDate, isCompleted };
+    return { title, description, dueDate, isCompleted, isImportant };
 };
 
 const clearToDoInfoInputs = () => {
@@ -89,6 +93,20 @@ const handleEditTodoClick = (todoDataIndex, projectDataIndex) => {
 
 const handleDeleteTodoClick = (todoDataIndex, projectDataIndex) => {
     projectsAndToDosManager.deleteTodo(projectDataIndex, todoDataIndex);
+};
+
+const switchTodoImportance = (todoIndex, projectIndex, event) => {
+    const projects = projectsAndToDosManager.getProjects();
+    const targetTodo = projects[projectIndex].todos[todoIndex];
+
+    // Toggle the isImportant property
+    const isImportant = !targetTodo.isImportant;
+
+    // Toggle the todo importance using the project manager
+    projectsAndToDosManager.toggleTodoImportance(projectIndex, todoIndex, isImportant);
+
+    // Toggle todo star color based on isImportant variable
+    toggleStarColor(event, isImportant);
 };
 
 // Button to create a new project ("Add Project" button)
@@ -133,8 +151,9 @@ document.querySelector("#edit-todo-form").addEventListener("submit", (e) => {
     clearToDoInfoInputs();
 });
 
+// Edit, delete or star button in each todo
 document.querySelector("body").addEventListener("click", (e) => {
-    if (e.target.className === "edit-to-do") {
+    if (e.target.classList.contains("edit-to-do")) {
         // Get targeted html todo data-index and project data-index
         todoDataIndex = e.target.closest(".todo").dataset.todoIndex;
         projectDataIndex = e.target.closest(".todo").dataset.projectIndex;
@@ -143,11 +162,18 @@ document.querySelector("body").addEventListener("click", (e) => {
         return;
     }
 
-    if (e.target.className === "delete-to-do") {
+    if (e.target.classList.contains("delete-to-do")) {
         // Get targeted html todo data-index and project data-index
         todoDataIndex = e.target.closest(".todo").dataset.todoIndex;
         projectDataIndex = e.target.closest(".todo").dataset.projectIndex;
         handleDeleteTodoClick(todoDataIndex, projectDataIndex);
+        return;
+    }
+
+    if (e.target.classList.contains("star-btn") || e.target.classList.contains("important")) {
+        todoDataIndex = e.target.closest(".todo").dataset.todoIndex;
+        projectDataIndex = e.target.closest(".todo").dataset.projectIndex;
+        switchTodoImportance(todoDataIndex, projectDataIndex, e);
     }
 });
 
@@ -175,5 +201,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Menu buttons
 homeMenuButtons.forEach((button) => {
-    button.addEventListener("click", handleMenuButtonsClick);
+    button.addEventListener("click", (e) => {
+        // If the last click was in some home menu button, dataIndexOfLastProjectClicked = null
+        // This is for validation in updateTodoInfo and deleteTodo function in the project-manager
+        dataIndexOfLastProjectClicked = null;
+
+        handleMenuButtonsClick(e);
+    });
 });
