@@ -200,15 +200,20 @@ div.tasks-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    border: 1px solid black;
+    border: 2px solid #dfdfdf;
+    border-radius: 0.3rem;
     padding: 0.5rem;
+}
+
+.tasks-container .task-list .todo:hover {
+    background-color: #eeeeee;
 }
 
 .tasks-container .task-list .todo .todo-left-side {
     display: grid;
     grid-template-columns: auto 1fr;
     align-items: center;
-    gap: 10px;
+    gap: 1.4rem;
 }
 
 .tasks-container .task-list .todo .todo-left-side .todo-description {
@@ -230,23 +235,44 @@ div.tasks-container {
 }
 
 .tasks-container .add-task-button:hover,
-.tasks-container .task-list .todo-right-side button {
+.tasks-container .task-list .todo-right-side button:hover {
     cursor: pointer;
 }
 
-.tasks-container .task-list .todo-right-side button.star-btn  {
+.tasks-container .task-list .todo-right-side button.star-btn,
+.tasks-container .task-list .todo-right-side button.edit-to-do,
+.tasks-container .task-list .todo-right-side button.delete-to-do {
     background: none;
     border: none;
-    background-image: url("./images/star.png");
     background-size: 100%;
     background-repeat: no-repeat;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
 }
 
-.tasks-container .task-list .todo-right-side button.star-btn.important {
-    /* If todo is set to important */
+.tasks-container .task-list .todo-right-side button.star-btn {
+    background-image: url("./images/star.png");
+}
+
+.tasks-container .task-list .todo-right-side button.star-btn.important,
+.tasks-container .task-list .todo-right-side button.star-btn:hover {
     background-image: url("./images/star-filled.png");
+}
+
+.tasks-container .task-list .todo-right-side button.edit-to-do {
+    background-image: url("./images/edit-todo.png");
+}
+
+.tasks-container .task-list .todo-right-side button.edit-to-do:hover {
+    background-image: url("./images/edit-todo-hover.png");
+}
+
+.tasks-container .task-list .todo-right-side button.delete-to-do {
+    background-image: url("./images/delete-todo.png");
+}
+
+.tasks-container .task-list .todo-right-side button.delete-to-do:hover {
+    background-image: url("./images/delete-todo-hover.png");
 }
 
 .tasks-container .todo-input-information-container,
@@ -264,3 +290,47 @@ div.tasks-container {
 .tasks-container #todo-input-form .submit-buttons {
     align-self: center;
 }
+
+/* Todos rounded checkboxes */
+.rounded-checkbox {
+    position: relative;
+  }
+  
+.rounded-checkbox label {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 20px;
+    left: 3px;
+    position: absolute;
+    top: 0;
+    width: 20px;
+  }
+  
+.rounded-checkbox label:after {
+    border: 2px solid #fff;
+    border-top: none;
+    border-right: none;
+    content: "";
+    height: 6px;
+    left: 3px;
+    opacity: 0;
+    position: absolute;
+    top: 4px;
+    transform: rotate(-50deg);
+    width: 10px;
+  }
+  
+.rounded-checkbox input[type="checkbox"] {
+    visibility: hidden;
+}
+  
+.rounded-checkbox input[type="checkbox"]:checked + label {
+    background-color: #66bb6a;
+    border-color: #66bb6a;
+  }
+  
+.rounded-checkbox input[type="checkbox"]:checked + label:after {
+    opacity: 1;
+  }

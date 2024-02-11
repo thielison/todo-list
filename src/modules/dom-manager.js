@@ -221,11 +221,14 @@ const createTodoLeftSide = (projectIndex, todoIndex) => {
 
     // Create a div that will contain the todo checkbox
     const checkboxDiv = document.createElement("div");
+    checkboxDiv.className = "rounded-checkbox";
 
     const checkbox = document.createElement("input");
     checkbox.setAttribute("type", "checkbox");
     checkbox.setAttribute("id", `project[${projectIndex}]-todo[${todoIndex}]`);
     checkbox.setAttribute("name", `todo-checkbox`);
+    const label = document.createElement("label");
+    label.setAttribute("for", `project[${projectIndex}]-todo[${todoIndex}]`);
 
     // Each todo checkbox will have its own event listener
     // This allows to toggle each todo as completed or not
@@ -236,7 +239,7 @@ const createTodoLeftSide = (projectIndex, todoIndex) => {
         checkbox.checked = true;
     }
 
-    checkboxDiv.append(checkbox);
+    checkboxDiv.append(checkbox, label);
 
     // Create a div that will contain the todo title and description
     const todoTitleAndDescriptionDiv = document.createElement("div");
@@ -271,11 +274,9 @@ const createTodoRightSide = (projectIndex, todoIndex) => {
 
     const editTodoBtn = document.createElement("button");
     editTodoBtn.className = "edit-to-do";
-    editTodoBtn.textContent = "Edit";
 
     const deleteTodoBtn = document.createElement("button");
     deleteTodoBtn.className = "delete-to-do";
-    deleteTodoBtn.textContent = "Delete";
 
     const isImportantStarBtn = document.createElement("button");
     isImportantStarBtn.className = "star-btn";
