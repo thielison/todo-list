@@ -79,14 +79,17 @@ const projectNameClickEventHandler = (e) => {
     toggleAddTaskButton(true);
 };
 
-// Depending on the boolean passed as an argument, this function will add or
-// remove the css class "disabled" from each project name and the Add Project btn,
-// preventing changing and adding projects when editing a specific todo
+// Prevents click on menu buttons when editing a todo
 const preventAddOrChangeProject = (status) => {
-    const projects = document.querySelectorAll(".projects li");
+    const projectsMenu = document.querySelectorAll(".projects li");
+    const homeMenu = document.querySelectorAll(".home-menu li");
     const addProjectBtn = document.getElementById("add-project-button");
 
-    projects.forEach((project) => {
+    projectsMenu.forEach((project) => {
+        status ? project.classList.add("disabled") : project.classList.remove("disabled");
+    });
+
+    homeMenu.forEach((project) => {
         status ? project.classList.add("disabled") : project.classList.remove("disabled");
     });
 
@@ -185,9 +188,10 @@ const updateTaskCount = (numOfTodos) => {
 };
 
 // FUNCTIONS RESPONSIBLE FOR MANAGING TO DOS
-
 // This function changes the todo status as completed or not
 const onTodoCheckboxChange = (e) => {
+    e.target.closest(".todo").classList.add("completed-todo");
+    console.log(e.target.closest(".todo"));
     const isCompleted = e.target.checked;
     const projectIndex = e.target.closest(".todo").dataset.projectIndex;
     const todoIndex = e.target.closest(".todo").dataset.todoIndex;
@@ -219,28 +223,6 @@ const createTodoLeftSide = (projectIndex, todoIndex) => {
     const todoLeftSide = document.createElement("div");
     todoLeftSide.className = "todo-left-side";
 
-    // Create a div that will contain the todo checkbox
-    const checkboxDiv = document.createElement("div");
-    checkboxDiv.className = "rounded-checkbox";
-
-    const checkbox = document.createElement("input");
-    checkbox.setAttribute("type", "checkbox");
-    checkbox.setAttribute("id", `project[${projectIndex}]-todo[${todoIndex}]`);
-    checkbox.setAttribute("name", `todo-checkbox`);
-    const label = document.createElement("label");
-    label.setAttribute("for", `project[${projectIndex}]-todo[${todoIndex}]`);
-
-    // Each todo checkbox will have its own event listener
-    // This allows to toggle each todo as completed or not
-    checkbox.addEventListener("change", onTodoCheckboxChange);
-
-    const todoIsChecked = projectsAndTodosArray[projectIndex].todos[todoIndex].isCompleted;
-    if (todoIsChecked) {
-        checkbox.checked = true;
-    }
-
-    checkboxDiv.append(checkbox, label);
-
     // Create a div that will contain the todo title and description
     const todoTitleAndDescriptionDiv = document.createElement("div");
     todoTitleAndDescriptionDiv.classList = "todo-title-and-description-div";
@@ -252,6 +234,31 @@ const createTodoLeftSide = (projectIndex, todoIndex) => {
     const todoDescriptionPara = document.createElement("p");
     todoDescriptionPara.className = "todo-description";
     todoDescriptionPara.textContent = projectsAndTodosArray[projectIndex].todos[todoIndex].description;
+
+    // Create a div that will contain the todo checkbox
+    const checkboxDiv = document.createElement("div");
+    checkboxDiv.className = "rounded-checkbox";
+
+    const checkbox = document.createElement("input");
+    const label = document.createElement("label");
+    checkbox.setAttribute("type", "checkbox");
+    checkbox.setAttribute("id", `project[${projectIndex}]-todo[${todoIndex}]`);
+    checkbox.setAttribute("name", `todo-checkbox`);
+    label.setAttribute("for", `project[${projectIndex}]-todo[${todoIndex}]`);
+
+    // Each todo checkbox will have its own event listener
+    // This allows to toggle each todo as completed or not
+    checkbox.addEventListener("change", onTodoCheckboxChange);
+
+    const todoIsChecked = projectsAndTodosArray[projectIndex].todos[todoIndex].isCompleted;
+    if (todoIsChecked) {
+        checkbox.checked = true;
+        todoTitleLabel.classList.add("completed-line-through");
+        todoDescriptionPara.classList.add("completed-line-through");
+    }
+
+    // Append checkbox and label to the checkbox div
+    checkboxDiv.append(checkbox, label);
     // Append title and description to the todoTitleAndDescriptionDiv
     todoTitleAndDescriptionDiv.append(todoTitleLabel, todoDescriptionPara);
     // Append the checkbox div, and the title and description div
