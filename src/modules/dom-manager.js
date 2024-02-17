@@ -115,9 +115,6 @@ const handleClickOnDeleteProjectButton = (e) => {
     // And remove the project from the projects array
     projectsAndTodosManager.removeProject(e.target.parentElement.dataset.index);
 
-    // Project deleted, so taskCount = 0
-    updateTaskCount(0);
-
     // Clear all todos displayed in the page after deleting the project
     clearTaskList();
 
@@ -191,7 +188,6 @@ const updateTaskCount = (numOfTodos) => {
 // This function changes the todo status as completed or not
 const onTodoCheckboxChange = (e) => {
     e.target.closest(".todo").classList.add("completed-todo");
-    console.log(e.target.closest(".todo"));
     const isCompleted = e.target.checked;
     const projectIndex = e.target.closest(".todo").dataset.projectIndex;
     const todoIndex = e.target.closest(".todo").dataset.todoIndex;
@@ -406,6 +402,7 @@ const displayTodos = (display, projectIndex, todoIndex) => {
 
     if (display === "allProjectsTodos") {
         displayAllProjectsTodos();
+        updateTasksHeader("All Tasks");
         return;
     }
 

@@ -146,9 +146,16 @@ document.querySelector("#edit-todo-form").addEventListener("submit", (e) => {
     projectsAndToDosManager.updateTodoInfo(updatedTodoInfo, projectDataIndex, todoDataIndex);
 
     toggleHideOrShowInputToEditToDoInfo();
-    toggleAddTaskButton(true);
     preventAddOrChangeProject(false);
     clearToDoInfoInputs();
+
+    if (dataIndexOfLastProjectClicked === null) {
+        // Keeps "Add Task" button hidden if last click was in a home menu button
+        toggleAddTaskButton(false);
+    } else {
+        // Shows "Add Task" button if last click was in a project
+        toggleAddTaskButton(true);
+    }
 });
 
 // Edit, delete or star button in each todo
@@ -186,8 +193,15 @@ document.querySelector("#btn-cancel-todo").addEventListener("click", (e) => {
 document.querySelector("#btn-cancel-todo-update").addEventListener("click", (e) => {
     e.preventDefault();
     toggleHideOrShowInputToEditToDoInfo();
-    toggleAddTaskButton(true);
     preventAddOrChangeProject(false);
+
+    if (dataIndexOfLastProjectClicked === null) {
+        // Keeps "Add Task" button hidden if last click was in a home menu button
+        toggleAddTaskButton(false);
+    } else {
+        // Shows "Add Task" button if last click was in a project
+        toggleAddTaskButton(true);
+    }
 });
 
 document.addEventListener("DOMContentLoaded", () => {

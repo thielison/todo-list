@@ -93,14 +93,16 @@ const projectsAndToDosManager = () => {
 
     const toggleTodoCompletion = (projectIndex, todoIndex, todoIsCompleted) => {
         projects[projectIndex].todos[todoIndex].isCompleted = todoIsCompleted;
-        populateStorage(projects);
 
+        populateStorage(projects);
         manageUserLocation(projectIndex);
     };
 
     const toggleTodoImportance = (projectIndex, todoIndex, todoIsImportant) => {
         projects[projectIndex].todos[todoIndex].isImportant = todoIsImportant;
+
         populateStorage(projects);
+        manageUserLocation(projectIndex);
     };
 
     return {
