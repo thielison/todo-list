@@ -1,7 +1,7 @@
 "use strict";
 
 import { projects as projectsAndTodosManager } from "./project-manager.js";
-import { format } from "date-fns";
+import { format, isEqual, startOfWeek, endOfWeek, isWithinInterval } from "date-fns";
 
 // Export the updated data index of the last project clicked.
 // This index will be used to add todos to the last specific project clicked.
@@ -311,10 +311,11 @@ const createTodoElements = (projectIndex, todoIndex) => {
 const displayTodos = (display, projectIndex, todoIndex) => {
     const projectsAndTodosArray = projectsAndTodosManager.getProjects();
 
-    const displaySingleProjectTodos = () => {
-        const taskList = clearTaskList();
-        const ul = document.createElement("ul");
+    const taskList = clearTaskList();
 
+    const ul = document.createElement("ul");
+
+    const displaySingleProjectTodos = () => {
         for (let i = 0; i < projectsAndTodosArray[projectIndex].todos.length; i++) {
             const li = createTodoElements(projectIndex, i);
             ul.append(li);
@@ -327,9 +328,6 @@ const displayTodos = (display, projectIndex, todoIndex) => {
     };
 
     const displayAllProjectsTodos = () => {
-        const taskList = clearTaskList();
-        const ul = document.createElement("ul");
-
         for (let i = 0; i < projectsAndTodosArray.length; i++) {
             for (let j = 0; j < projectsAndTodosArray[i].todos.length; j++) {
                 const li = createTodoElements(i, j);
@@ -344,12 +342,22 @@ const displayTodos = (display, projectIndex, todoIndex) => {
     };
 
     const displayTodosDueToday = () => {
-        const taskList = document.querySelector(".task-list");
+        let today = format(new Date(), "yyyy-MM-dd");
 
-        const ul = document.createElement("ul");
-        const li = createTodoElements(projectIndex, todoIndex);
+        // For each todo inside a project, if this todo due date is equal to today's date, displays it on page
+        projectsAndTodosArray.forEach((project) => {
+            project.todos.forEach((todo) => {
+                const dueDateIsEqualToTodayDate = isEqual(todo.dueDate, today);
 
-        ul.append(li);
+                if (dueDateIsEqualToTodayDate) {
+                    let projectId = project.id;
+                    let todoIndex = projectsAndTodosArray[projectId].todos.indexOf(todo);
+                    const li = createTodoElements(projectId, todoIndex);
+                    ul.append(li);
+                }
+            });
+        });
+
         taskList.append(ul);
 
         const numOfTodos = document.querySelectorAll(".task-list ul li").length;
@@ -357,12 +365,32 @@ const displayTodos = (display, projectIndex, todoIndex) => {
     };
 
     const displayTodosDueThisWeek = () => {
-        const taskList = document.querySelector(".task-list");
+        let today = new Date();
 
-        const ul = document.createElement("ul");
-        const li = createTodoElements(projectIndex, todoIndex);
+        // Get the start and end of week based on today's date
+        const weekStart = startOfWeek(today, { weekStartsOn: 1 });
+        const weekEnd = endOfWeek(today, { weekStartsOn: 1 });
 
-        ul.append(li);
+        // Format start and end of week dates to correspond todo dueDate
+        const formattedWeekStart = format(weekStart, "yyyy-MM-dd");
+        const formattedWeekEnd = format(weekEnd, "yyyy-MM-dd");
+
+        projectsAndTodosArray.forEach((project) => {
+            project.todos.forEach((todo) => {
+                const isTodoDueThisWeek = isWithinInterval(todo.dueDate, {
+                    start: formattedWeekStart,
+                    end: formattedWeekEnd,
+                });
+
+                if (isTodoDueThisWeek) {
+                    let projectId = project.id;
+                    let todoIndex = projectsAndTodosArray[projectId].todos.indexOf(todo);
+                    const li = createTodoElements(projectId, todoIndex);
+                    ul.append(li);
+                }
+            });
+        });
+
         taskList.append(ul);
 
         const numOfTodos = document.querySelectorAll(".task-list ul li").length;
@@ -370,12 +398,17 @@ const displayTodos = (display, projectIndex, todoIndex) => {
     };
 
     const displayImportantTodos = () => {
-        const taskList = document.querySelector(".task-list");
+        projectsAndTodosArray.forEach((project) => {
+            project.todos.forEach((todo) => {
+                if (todo.isImportant) {
+                    let projectId = project.id;
+                    let todoIndex = projectsAndTodosArray[projectId].todos.indexOf(todo);
+                    const li = createTodoElements(projectId, todoIndex);
+                    ul.append(li);
+                }
+            });
+        });
 
-        const ul = document.createElement("ul");
-        const li = createTodoElements(projectIndex, todoIndex);
-
-        ul.append(li);
         taskList.append(ul);
 
         const numOfTodos = document.querySelectorAll(".task-list ul li").length;
@@ -383,45 +416,45 @@ const displayTodos = (display, projectIndex, todoIndex) => {
     };
 
     const displayCompletedTodos = () => {
-        const taskList = document.querySelector(".task-list");
+        projectsAndTodosArray.forEach((project) => {
+            project.todos.forEach((todo) => {
+                if (todo.isCompleted) {
+                    let projectId = project.id;
+                    let todoIndex = projectsAndTodosArray[projectId].todos.indexOf(todo);
+                    const li = createTodoElements(projectId, todoIndex);
+                    ul.append(li);
+                }
+            });
+        });
 
-        const ul = document.createElement("ul");
-        const li = createTodoElements(projectIndex, todoIndex);
-
-        ul.append(li);
         taskList.append(ul);
 
         const numOfTodos = document.querySelectorAll(".task-list ul li").length;
         updateTaskCount(numOfTodos);
     };
 
-    if (display === "singleProjectTodos") {
-        displaySingleProjectTodos();
-        return;
-    }
-
-    if (display === "allProjectsTodos") {
-        displayAllProjectsTodos();
-        updateTasksHeader("All Tasks");
-        return;
-    }
-
-    if (display === "todosDueToday") {
-        displayTodosDueToday();
-        return;
-    }
-
-    if (display === "todosDueThisWeek") {
-        displayTodosDueThisWeek();
-        return;
-    }
-
-    if (display === "importantTodos") {
-        displayImportantTodos();
-    }
-
-    if (display === "completedTodos") {
-        displayCompletedTodos();
+    switch (display) {
+        case "singleProjectTodos":
+            displaySingleProjectTodos();
+            break;
+        case "allProjectsTodos":
+            displayAllProjectsTodos();
+            updateTasksHeader("All Tasks");
+            break;
+        case "todosDueToday":
+            displayTodosDueToday();
+            break;
+        case "todosDueThisWeek":
+            displayTodosDueThisWeek();
+            break;
+        case "importantTodos":
+            displayImportantTodos();
+            break;
+        case "completedTodos":
+            displayCompletedTodos();
+            break;
+        default:
+            console.log("Error displaying todos");
     }
 };
 
