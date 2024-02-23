@@ -1,6 +1,7 @@
 "use strict";
 
 import { projects as projectsAndTodosManager } from "./project-manager";
+import { defaultProjects } from "../index.js";
 
 // This function populates the local storage whenever there is a change in the projects and todos array
 export const populateStorage = (projectsAndTodosArray) => {
@@ -9,15 +10,20 @@ export const populateStorage = (projectsAndTodosArray) => {
 
 // This function retrieves the projects and todos from local storage
 const getProjectsAndTodosFromStorage = () => {
-    let projectsAndTodos = null;
+    let storedProjectsAndTodos = null;
 
     try {
-        projectsAndTodos = JSON.parse(localStorage.getItem("projectsAndTodos"));
+        // Check if there is any data in local storage
+        storedProjectsAndTodos = localStorage.getItem("projectsAndTodos");
+
+        // If there is, parse it and use it as the initial state
+        // If not, use the default projects array as the initial state
+        const initialProjects = storedProjectsAndTodos ? JSON.parse(storedProjectsAndTodos) : defaultProjects;
+
+        return initialProjects;
     } catch (error) {
         console.error("Error parsing projects and todos from local storage", error);
     }
-
-    return projectsAndTodos;
 };
 
 // This function renders the projects and todos from local storage
@@ -43,8 +49,8 @@ const renderProjectsAndTodosFromStorage = (projectsAndTodos) => {
 
 // When the document content is loaded
 document.addEventListener("DOMContentLoaded", () => {
-    // Retrieve the projects and todos from local storage
-    const projectsAndTodos = getProjectsAndTodosFromStorage();
+    // Retrieve the projects and todos from local storage or default projects
+    const initialProjectsAndTodos = getProjectsAndTodosFromStorage();
     // Render the retrieved projects and todos in the page
-    renderProjectsAndTodosFromStorage(projectsAndTodos);
+    renderProjectsAndTodosFromStorage(initialProjectsAndTodos);
 });

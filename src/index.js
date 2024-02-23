@@ -223,3 +223,87 @@ homeMenuButtons.forEach((button) => {
         handleMenuButtonsClick(e);
     });
 });
+
+export const defaultProjects = [
+    {
+        id: 0,
+        projectName: "Code Master",
+        todos: [
+            {
+                title: "Code Kata",
+                description: "Complete a coding kata on CodeWars. Remember, the force is strong with this one!",
+                dueDate: "2024-06-01",
+                isCompleted: false,
+                isImportant: true,
+            },
+            {
+                title: "Debugging Party",
+                description: "Find and fix a bug in my code. It's not a bug, it's a feature :D",
+                dueDate: "2024-06-02",
+                isCompleted: true,
+                isImportant: false,
+            },
+            {
+                title: "Algorithm Gym",
+                description: "Solve a problem on LeetCode.",
+                dueDate: "2024-06-07",
+                isCompleted: false,
+                isImportant: false,
+            },
+            {
+                title: "Code Review",
+                description: "Review a friend's code. Remember, code reviews are like group therapy sessions!",
+                dueDate: "2024-06-08",
+                isCompleted: false,
+                isImportant: true,
+            },
+        ],
+    },
+    {
+        id: 1,
+        projectName: "Study Guru",
+        todos: [
+            {
+                title: "Tech Talk",
+                description: "Watch a tech talk on a topic I'm interested in!",
+                dueDate: "2024-06-03",
+                isCompleted: false,
+                isImportant: true,
+            },
+            {
+                title: "Read Docs",
+                description: "Read the documentation. It's like a user manual, but for code!",
+                dueDate: "2024-06-04",
+                isCompleted: false,
+                isImportant: false,
+            },
+            {
+                title: "Online Course",
+                description: "Complete a module from that online course.",
+                dueDate: "2024-06-11",
+                isCompleted: true,
+                isImportant: true,
+            },
+        ],
+    },
+    {
+        id: 2,
+        projectName: "Fitness Fanatic",
+        todos: [
+            {
+                title: "Yoga Time",
+                description: "Do a 15-minute yoga session.",
+                dueDate: "2024-06-05",
+                isCompleted: false,
+                isImportant: true,
+            },
+            {
+                title: "Run, Forest, Run",
+                description: "Go for a run. If a bug chases me, I'll run faster!",
+                dueDate: "2024-06-06",
+                isCompleted: true,
+                isImportant: false,
+            },
+        ],
+    },
+];
